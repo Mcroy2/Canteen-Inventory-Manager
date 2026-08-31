@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CIM - Canteen Inventory Manager - Print Fix</title>
+<title>CIM - Canteen Inventory Manager v0.5</title>
 <style>
 :root{--bg:#070b12;--panel:#111827;--panel2:#172033;--line:#334155;--text:#f8fafc;--muted:#aab4c5;--red:#b91c2b;--blue:#1d4ed8;--green:#166534;--amber:#f59e0b}
 *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#05070b,#0b1220);color:var(--text)} button,input,select,textarea{font:inherit} button{cursor:pointer}
@@ -26,224 +26,26 @@ main{max-width:1500px;margin:auto;padding:18px 16px 70px} .panel{background:rgba
 .schedule-head,.schedule-month{display:grid;grid-template-columns:repeat(7,1fr);gap:8px} .schedule-head{font-size:12px;color:#cbd5e1;text-align:center;margin-bottom:8px} .daycell{min-height:145px;background:#0f172a;border:1px solid var(--line);border-radius:12px;padding:8px} .daycell.out{opacity:.35} .date{font-weight:800;margin-bottom:6px} .shift{background:#172033;border:1px solid #334155;border-radius:9px;padding:7px;margin:6px 0;font-size:12px} .shift b{display:block;font-size:13px}
 .dayevent{background:#3b1d2b;border:1px solid #be123c;border-radius:8px;padding:6px;margin:5px 0;font-size:12px}.dayevent b{display:block}.dayevent .evt-time{color:#fecdd3}@media(max-width:900px){.schedule-head{display:none} .schedule-month{grid-template-columns:1fr} .daycell.out{display:none} .daycell{min-height:auto}}
 
-@page{
-  size: landscape;
-  margin: .22in;
-}
 @media print{
-  html,body{
-    width:100%;
-    height:auto;
-    margin:0!important;
-    padding:0!important;
-    background:#fff!important;
-    color:#000!important;
-  }
-
-  header{display:none!important}
-  main{
-    max-width:none!important;
-    width:100%!important;
-    margin:0!important;
-    padding:0!important;
-  }
-
-  .tab{display:none!important}
-
-  /* Only the schedule is printed. */
-  #schedule.printing{
-    display:block!important;
-    width:100%!important;
-    margin:0!important;
-    padding:0!important;
-  }
-
-  /* Hide the shift-tracker panel entirely. */
-  #schedule.printing .panel:nth-child(2){
-    display:none!important;
-  }
-
-  #schedule.printing .panel:first-child{
-    display:block!important;
-    width:100%!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    background:#fff!important;
-    box-shadow:none!important;
-    break-inside:avoid-page!important;
-    page-break-inside:avoid!important;
-  }
-
-  /* Printed title line: title + selected month. */
-  #schedule.printing .toolbar{
-    display:flex!important;
-    align-items:flex-end!important;
-    justify-content:center!important;
-    gap:10px!important;
-    margin:0 0 .08in 0!important;
-    padding:0!important;
-    min-height:0!important;
-    color:#000!important;
-  }
-  #schedule.printing .toolbar h2{
-    display:block!important;
-    margin:0!important;
-    font-size:15pt!important;
-    line-height:1!important;
-    color:#000!important;
-  }
-  #schedule.printing #scheduleMonthLabel{
-    display:block!important;
-    margin:0!important;
-    font-size:11pt!important;
-    line-height:1!important;
-    color:#000!important;
-  }
-
-  #schedule.printing .toolbar button,
-  #schedule.printing .muted,
-  #schedule.printing .btn{
-    display:none!important;
-  }
-
-  #schedule.printing .schedule-head{
-    display:grid!important;
-    grid-template-columns:repeat(7,minmax(0,1fr))!important;
-    gap:0!important;
-    margin:0!important;
-    border:1px solid #000!important;
-    border-bottom:0!important;
-    color:#000!important;
-    font-size:7.5pt!important;
-    font-weight:700!important;
-    line-height:1.05!important;
-    text-align:center!important;
-  }
-  #schedule.printing .schedule-head>div{
-    padding:3px 1px!important;
-    border-right:1px solid #000!important;
-  }
-  #schedule.printing .schedule-head>div:last-child{
-    border-right:0!important;
-  }
-
-  /*
-   * Six calendar rows are forced into the printable landscape page.
-   * Keeping the entire grid together prevents Chrome from splitting
-   * a week between pages.
-   */
-  #schedule.printing .schedule-month{
-    display:grid!important;
-    grid-template-columns:repeat(7,minmax(0,1fr))!important;
-    grid-template-rows:repeat(6,minmax(0,1fr))!important;
-    gap:0!important;
-    width:100%!important;
-    height:6.85in!important;
-    margin:0!important;
-    padding:0!important;
-    border-left:1px solid #000!important;
-    border-top:1px solid #000!important;
-    break-inside:avoid-page!important;
-    page-break-inside:avoid!important;
-    overflow:hidden!important;
-  }
-
-  #schedule.printing .daycell{
-    display:block!important;
-    min-width:0!important;
-    min-height:0!important;
-    height:auto!important;
-    margin:0!important;
-    padding:2px 3px!important;
-    overflow:hidden!important;
-    background:#fff!important;
-    color:#000!important;
-    border:0!important;
-    border-right:1px solid #000!important;
-    border-bottom:1px solid #000!important;
-    border-radius:0!important;
-    opacity:1!important;
-    font-size:6.3pt!important;
-    line-height:1.05!important;
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
-  }
-
-  #schedule.printing .daycell.out{
-    display:block!important;
-    opacity:.45!important;
-  }
-
-  #schedule.printing .date{
-    margin:0 0 1px 0!important;
-    font-size:7.5pt!important;
-    line-height:1!important;
-    font-weight:800!important;
-    color:#000!important;
-  }
-
-  #schedule.printing .shift{
-    margin:1px 0!important;
-    padding:1px 0 0 0!important;
-    background:#fff!important;
-    color:#000!important;
-    border:0!important;
-    border-top:1px solid #aaa!important;
-    border-radius:0!important;
-    font-size:5.8pt!important;
-    line-height:1.02!important;
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
-  }
-  #schedule.printing .shift b{
-    display:block!important;
-    margin:0!important;
-    font-size:6.2pt!important;
-    line-height:1.02!important;
-    color:#000!important;
-  }
-  #schedule.printing .shift .small{
-    color:#222!important;
-    font-size:5.4pt!important;
-    line-height:1!important;
-  }
-
-  #schedule.printing .dayevent{
-    margin:1px 0!important;
-    padding:1px 2px!important;
-    background:#f3f4f6!important;
-    color:#000!important;
-    border:1px solid #555!important;
-    border-radius:0!important;
-    font-size:5.8pt!important;
-    line-height:1.02!important;
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
-  }
-  #schedule.printing .dayevent b{
-    display:block!important;
-    margin:0!important;
-    font-size:6.2pt!important;
-    line-height:1.02!important;
-    color:#000!important;
-  }
-  #schedule.printing .dayevent .evt-time,
-  #schedule.printing .dayevent .small{
-    color:#111!important;
-    font-size:5.4pt!important;
-    line-height:1!important;
-  }
-
-  /* Do not print manager controls that may be inside a day. */
-  #schedule.printing [data-manager-only="1"],
-  #schedule.printing [data-add-event],
-  #schedule.printing [data-add-day],
-  #schedule.printing [data-edit-shift],
-  #schedule.printing [data-edit-event]{
-    display:none!important;
-  }
+ body{background:#fff;color:#000} header{display:none!important} main{max-width:none;padding:0} .tab{display:none!important}
+ #schedule.printing{display:block!important} #schedule.printing .panel:first-child{border:0;padding:0}
+ #schedule.printing .toolbar button,#schedule.printing .muted,#schedule.printing .panel:nth-child(2){display:none!important}
+ #schedule.printing .schedule-head{display:grid!important;color:#000} #schedule.printing .schedule-month{display:grid!important;grid-template-columns:repeat(7,1fr)!important;gap:4px}
+ #schedule.printing .daycell{display:block!important;min-height:125px;background:#fff;color:#000;border:1px solid #000;border-radius:0;padding:5px}
+ #schedule.printing .daycell.out{opacity:1} #schedule.printing .shift{background:#fff;color:#000;border:0;border-top:1px solid #aaa;border-radius:0;padding:4px 0;margin:2px 0}#schedule.printing .dayevent{background:#fff;color:#000;border:1px solid #000;border-radius:0;padding:3px;margin:3px 0}#schedule.printing .dayevent .evt-time{color:#000} #schedule.printing .btn{display:none!important}
 }
+
+
+.status-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.status-pending{background:#f59e0b}.status-approved{background:#22c55e}.status-denied{background:#ef4444}.status-info{background:#3b82f6}
+.summarygrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.summarybox{background:#0f172a;border:1px solid var(--line);border-radius:12px;padding:12px}
+.summarybox strong{font-size:22px;display:block;margin-top:4px}
+.action-item{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;background:#0f172a}
+.notice-card{border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:12px;padding:14px;margin:10px 0;background:#0f172a}
+.notice-card.required{border-left-color:var(--red)}
+.money{font-variant-numeric:tabular-nums}
+.printonly{display:none}
 
 </style>
 </head>
@@ -262,6 +64,10 @@ main{max-width:1500px;margin:auto;padding:18px 16px 70px} .panel{background:rgba
 <button data-tab="schedule">Schedule</button>
 <button data-tab="tasks">Shift Tasks</button>
 <button data-tab="drop">End of Shift Drop</button>
+<button data-tab="requests">Requests</button>
+<button data-tab="notices">Notices</button>
+<button data-tab="budget" data-manager="1">Crew Budget</button>
+<button data-tab="log" data-manager="1">Manager Log</button>
 <button data-tab="items" data-manager="1">Items</button>
 <button data-tab="settings" data-manager="1">Settings</button>
 </nav>
@@ -279,7 +85,7 @@ main{max-width:1500px;margin:auto;padding:18px 16px 70px} .panel{background:rgba
 
 <section id="movement" class="tab hidden">
 <div class="panel">
-<div class="toolbar"><h2 style="margin:0;margin-right:auto">Stock Movement</h2><input id="moveSearch" placeholder="Search items..."><select id="moveCategory"></select></div>
+<div class="toolbar"><h2 style="margin:0;margin-right:auto">Stock Movement</h2><button id="reportAdjustmentBtn" class="btn">Report Waste / Breakage</button><input id="moveSearch" placeholder="Search items..."><select id="moveCategory"></select></div>
 <div class="stockgrid" id="moveGrid"></div>
 </div>
 <div class="panel"><h3>Recent Stock Movements</h3><div id="moveHistory"></div></div>
@@ -287,14 +93,22 @@ main{max-width:1500px;margin:auto;padding:18px 16px 70px} .panel{background:rgba
 
 <section id="count" class="tab hidden">
 <div class="panel">
-<div class="toolbar"><h2 style="margin:0;margin-right:auto">Inventory Count</h2><input id="countSearch" placeholder="Search..."><select id="countCategory"></select><button id="saveCountBtn" class="btn primary">Save Count Snapshot</button></div>
+<div class="toolbar"><h2 style="margin:0;margin-right:auto">Inventory Count</h2><input id="countSearch" placeholder="Search..."><select id="countCategory"></select><button id="saveCountBtn" class="btn primary">Save Count Snapshot</button><button id="printInventoryBtn" class="btn">Print Inventory / PAR</button></div>
 <p class="muted">For case-based items, enter cases, packs, and singles. CIM calculates the total and compares it to a case-based PAR. Liquor uses bottle PAR.</p>
 <div class="tablewrap"><table><thead><tr><th>Item</th><th>Unit</th><th>Distributor</th><th>PAR Type</th><th>PAR</th><th>Cases</th><th>Packs</th><th>Singles</th><th>Total</th><th>Suggested Order</th></tr></thead><tbody id="countBody"></tbody></table></div>
 </div>
 </section>
 
 <section id="orders" class="tab hidden">
-<div class="panel"><div class="toolbar"><h2 style="margin:0;margin-right:auto">Suggested Orders</h2><button id="printOrders" class="btn">Print</button></div><div id="ordersContainer"></div></div>
+<div class="panel">
+  <div class="toolbar"><h2 style="margin:0;margin-right:auto">Distributor Orders</h2><button id="printOrders" class="btn">Print Current Orders</button></div>
+  <p class="muted">Bottle pulls and opened cases automatically add one replacement unit to the pending order for that item's distributor. PAR suggestions remain visible as a separate planning reference.</p>
+  <div id="ordersContainer"></div>
+</div>
+<div class="panel">
+  <div class="toolbar"><h2 style="margin:0;margin-right:auto">Placed Orders / Receiving</h2><button id="printOrderHistoryBtn" class="btn">Print Order History</button></div>
+  <div id="placedOrdersContainer"></div>
+</div>
 </section>
 
 <section id="schedule" class="tab hidden">
@@ -303,7 +117,7 @@ main{max-width:1500px;margin:auto;padding:18px 16px 70px} .panel{background:rgba
 <p class="muted">Closing times are scheduled end times only and can run later. Add custom shifts for events or Shack coverage.</p>
 <div id="scheduleGrid"></div>
 </div>
-<div class="panel"><div class="toolbar"><h2 style="margin:0;margin-right:auto">Monthly Shift Tracker</h2><button id="refreshTrackerBtn" class="btn">Refresh</button></div><p class="muted">Counts assigned past shifts for the selected month, excluding Cancelled and No Show. If someone covered a shift, edit the shift to the bartender who actually worked it.</p><div id="shiftTracker"></div></div>
+<div class="panel"><div class="toolbar"><h2 style="margin:0;margin-right:auto">Monthly Shift Tracker</h2><button id="refreshTrackerBtn" class="btn">Refresh</button><button id="printShiftTrackerBtn" class="btn">Print Shift Tracker</button></div><p class="muted">Counts assigned past shifts for the selected month, excluding Cancelled and No Show. If someone covered a shift, edit the shift to the bartender who actually worked it.</p><div id="shiftTracker"></div></div>
 </section>
 
 
@@ -314,7 +128,7 @@ main{max-width:1500px;margin:auto;padding:18px 16px 70px} .panel{background:rgba
   <div id="taskChecklist"></div>
   <div class="row" style="margin-top:14px"><button id="saveTasksBtn" class="btn primary">Save Task Progress</button><button id="completeTasksBtn" class="btn good">Complete Shift Tasks</button></div>
 </div>
-<div class="panel manager-task-history hidden"><h2>Task History — Manager</h2><div id="taskHistory"></div></div>
+<div class="panel manager-task-history hidden"><div class="toolbar"><h2 style="margin:0;margin-right:auto">Task History — Manager</h2><button id="printTaskHistoryBtn" class="btn">Print Task History</button></div><div id="taskHistory"></div></div>
 </section>
 
 <section id="drop" class="tab hidden">
@@ -332,7 +146,93 @@ main{max-width:1500px;margin:auto;padding:18px 16px 70px} .panel{background:rgba
   </div>
   <div class="row" style="margin-top:14px"><button id="reviewDropBtn" class="btn primary">Review & Submit</button><button id="clearDropFormBtn" class="btn">Clear Form</button></div>
 </div>
-<div id="dropHistoryPanel" class="panel hidden"><div class="toolbar"><h2 style="margin:0;margin-right:auto">Past Drop Entries — Manager</h2><input id="dropHistorySearch" placeholder="Search bartender/date..."><button id="printDropHistoryBtn" class="btn">Print</button></div><div id="dropHistory"></div></div>
+<div id="dropHistoryPanel" class="panel hidden"><div class="toolbar"><h2 style="margin:0;margin-right:auto">Past Drop Entries — Manager</h2><input id="dropHistorySearch" placeholder="Search bartender/date..."><button id="printDropHistoryBtn" class="btn">Print Drop History</button></div><div id="dropHistory"></div></div>
+</section>
+
+
+<section id="requests" class="tab hidden">
+<div class="panel">
+  <h2>Shift Exchange Request</h2>
+  <p class="muted">Submitting a request does not change the schedule. A manager must approve the replacement before the official schedule changes.</p>
+  <div class="formgrid">
+    <label>Your Name<select id="exchangeRequester"></select></label>
+    <label>Your Scheduled Shift<select id="exchangeShift"></select></label>
+    <label>Requested Replacement<select id="exchangeReplacement"><option value="">Open to Anyone</option></select></label>
+    <label>Reason / Notes<input id="exchangeNotes" placeholder="Optional"></label>
+  </div>
+  <div class="row" style="margin-top:12px"><button id="submitExchangeBtn" class="btn primary">Submit Shift Exchange</button></div>
+</div>
+
+<div class="panel">
+  <h2>Open Shift Requests</h2>
+  <p class="muted">Bartenders may volunteer to cover an open request. Manager approval is still required.</p>
+  <div id="openExchangeList"></div>
+</div>
+
+<div class="panel">
+  <h2>Shopping Request</h2>
+  <p class="muted">Use this for supplies not handled by distributor inventory, such as cups, lemons, napkins, straws, cleaning supplies, coffee supplies, and similar items.</p>
+  <div class="formgrid">
+    <label>Requested By<select id="shoppingRequester"></select></label>
+    <label>Item<input id="shoppingItem" placeholder="Item needed"></label>
+    <label>Quantity<input id="shoppingQty" placeholder="e.g. 2 boxes"></label>
+    <label>Urgency<select id="shoppingUrgency"><option>Normal</option><option>Needed Soon</option></select></label>
+    <label class="full">Notes<input id="shoppingNotes" placeholder="Optional details"></label>
+  </div>
+  <div class="row" style="margin-top:12px"><button id="submitShoppingBtn" class="btn primary">Submit Shopping Request</button></div>
+</div>
+
+<div id="managerRequestPanel" class="panel hidden">
+  <div class="toolbar"><h2 style="margin:0;margin-right:auto">Request Management — Manager</h2>
+    <button id="printShoppingBtn" class="btn">Print Shopping List</button>
+    <button id="printExchangeBtn" class="btn">Print Shift Exchanges</button>
+  </div>
+  <h3>Shift Exchanges</h3><div id="managerExchangeList"></div>
+  <h3 style="margin-top:18px">Shopping Requests</h3><div id="managerShoppingList"></div>
+</div>
+</section>
+
+<section id="notices" class="tab hidden">
+<div class="panel">
+  <div class="toolbar"><h2 style="margin:0;margin-right:auto">Canteen Notices</h2><button id="newNoticeBtn" class="btn primary hidden">+ Publish Notice</button><button id="printNoticesBtn" class="btn">Print Notices</button></div>
+  <div id="noticeList"></div>
+</div>
+<div id="noticeManagerPanel" class="panel hidden"><h2>Notice Acknowledgments — Manager</h2><div id="noticeAckManager"></div></div>
+</section>
+
+<section id="budget" class="tab hidden">
+<div class="panel">
+  <div class="toolbar"><h2 style="margin:0;margin-right:auto">Canteen Crew Budget</h2><button id="setOpeningBudgetBtn" class="btn">Set Opening Balance</button><button id="printBudgetBtn" class="btn">Print Budget Report</button></div>
+  <p class="muted">This is a separate Canteen Crew fundraising/project budget. It is not connected to End of Shift Drops, Lotto, or Post accounting.</p>
+  <div class="summarygrid">
+    <div class="summarybox"><span class="muted">Opening Balance</span><strong id="budgetOpening" class="money">$0.00</strong></div>
+    <div class="summarybox"><span class="muted">Fundraisers Raised</span><strong id="budgetRaised" class="money">$0.00</strong></div>
+    <div class="summarybox"><span class="muted">Actual Purchases</span><strong id="budgetSpent" class="money">$0.00</strong></div>
+    <div class="summarybox"><span class="muted">Available Balance</span><strong id="budgetAvailable" class="money">$0.00</strong></div>
+    <div class="summarybox"><span class="muted">Approved / Committed</span><strong id="budgetCommitted" class="money">$0.00</strong></div>
+    <div class="summarybox"><span class="muted">Available After Commitments</span><strong id="budgetAfterCommit" class="money">$0.00</strong></div>
+  </div>
+</div>
+<div class="panel">
+  <div class="toolbar"><h3 style="margin:0;margin-right:auto">Fundraisers</h3><button id="addFundraiserBtn" class="btn primary">+ Add Fundraiser</button></div>
+  <div id="fundraiserList"></div>
+</div>
+<div class="panel">
+  <div class="toolbar"><h3 style="margin:0;margin-right:auto">Approved Purchases</h3><button id="addBudgetPurchaseBtn" class="btn primary">+ Add Approved Item</button></div>
+  <div id="budgetPurchaseList"></div>
+</div>
+</section>
+
+<section id="log" class="tab hidden">
+<div class="panel">
+  <div class="toolbar"><h2 style="margin:0;margin-right:auto">Manager Log</h2><button id="addLogBtn" class="btn primary">+ Add Log Entry</button><button id="printLogBtn" class="btn">Print Log</button></div>
+  <p class="muted">Use this for operational notes such as equipment issues, CO₂ changes, distributor problems, maintenance, unusual incidents, or follow-up items.</p>
+  <div id="managerLogList"></div>
+</div>
+<div class="panel">
+  <div class="toolbar"><h2 style="margin:0;margin-right:auto">Inventory Adjustments</h2><button id="addAdjustmentBtn" class="btn primary">+ Waste / Breakage</button><button id="printAdjustmentsBtn" class="btn">Print Adjustments</button></div>
+  <div id="adjustmentList"></div>
+</div>
 </section>
 
 <section id="items" class="tab hidden">
@@ -347,9 +247,9 @@ main{max-width:1500px;margin:auto;padding:18px 16px 70px} .panel{background:rgba
 
 <div class="panel"><h2>Shift Task Templates</h2><div class="toolbar"><select id="templateShiftType"><option>Opening</option><option>Closing</option><option>Friday Dinner</option><option>Sunday Breakfast</option><option>Shack / Event</option></select><input id="newTaskText" placeholder="New task"><button id="addTaskTemplateBtn" class="btn primary">Add Task</button></div><div id="taskTemplateList"></div></div>
 <div class="panel"><h2>Distributors</h2><div class="toolbar"><input id="newDistributor" placeholder="New distributor"><button id="addDistributorBtn" class="btn primary">Add Distributor</button></div><div id="distList"></div></div>
-<div class="panel"><h2>Manager & Data</h2><div class="row"><button id="changePinBtn" class="btn">Change Manager PIN</button><button id="backupBtn" class="btn good">Backup Data</button><label class="btn">Restore Backup<input id="restoreInput" type="file" accept=".json" class="hidden"></label><button id="clearDataBtn" class="btn danger">Clear All Data</button></div><div class="notice">Manager PIN protection is intended to prevent accidental or casual changes on the shared iPad. Clear All Data also requires typing CLEAR.</div></div>
+<div class="panel"><h2>Manager & Data</h2><div class="row"><button id="changePinBtn" class="btn">Change Manager PIN</button><button id="backupBtn" class="btn good">Backup Data</button><label class="btn">Restore Backup<input id="restoreInput" type="file" accept=".json" class="hidden"></label><button id="clearDataBtn" class="btn danger">Clear All Data</button></div><div class="notice">Manager PIN protection is intended to prevent accidental or casual changes on the shared tablet. Clear All Data also requires typing CLEAR.</div><div id="backupStatus" class="small"></div></div>
 </section>
-<div class="small" style="text-align:center;color:#64748b;margin-top:25px">CIM v0.4</div>
+<div class="small" style="text-align:center;color:#64748b;margin-top:25px">CIM v0.5</div>
 </main>
 <div id="modalRoot"></div>
 <script>
@@ -357,11 +257,16 @@ const SEED_ITEMS=[{"id": 1, "name": "Budweiser", "category": "Beer - Bottles/Can
 const DEFAULT_DISTS=["Unassigned","R&S Distribution","High Desert Distribution","Southern Glazer's","3rd Strike","Barstow Brewery","Other / Local"];
 const KEY="cim_data_v2";
 let managerUnlocked=false;
-function freshDB(){return {version:2,items:structuredClone(SEED_ITEMS),distributors:[...DEFAULT_DISTS],bartenders:[],schedule:[],events:[],movements:[],counts:[],taskTemplates:{"Opening":["Verify starting bank","Check bar stock and ice"],"Closing":["Restock bar","Clean bar area","Secure liquor","Complete End of Shift Drop"],"Friday Dinner":[],"Sunday Breakfast":[],"Shack / Event":[]},taskRuns:[],dropEntries:[],pinHash:null,nextItemId:SEED_ITEMS.length+1,nextBartenderId:1,nextShiftId:1,nextEventId:1}}
+function freshDB(){return {version:2,items:structuredClone(SEED_ITEMS),distributors:[...DEFAULT_DISTS],bartenders:[],schedule:[],events:[],movements:[],counts:[],orderQueue:[],orders:[],shiftExchanges:[],shoppingRequests:[],notices:[],noticeAcks:[],budget:{openingBalance:0,fundraisers:[],purchases:[]},managerLog:[],adjustments:[],taskTemplates:{"Opening":["Verify starting bank","Check bar stock and ice"],"Closing":["Restock bar","Clean bar area","Secure liquor","Complete End of Shift Drop"],"Friday Dinner":[],"Sunday Breakfast":[],"Shack / Event":[]},taskRuns:[],dropEntries:[],pinHash:null,nextItemId:SEED_ITEMS.length+1,nextBartenderId:1,nextShiftId:1,nextEventId:1}}
 function loadDB(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return freshDB()}
 let db=loadDB();db.events=db.events||[];db.nextEventId=db.nextEventId||1;
 db.taskTemplates=db.taskTemplates||{"Opening":["Verify starting bank","Check bar stock and ice"],"Closing":["Restock bar","Clean bar area","Secure liquor","Complete End of Shift Drop"],"Friday Dinner":[],"Sunday Breakfast":[],"Shack / Event":[]};
-db.taskRuns=db.taskRuns||[];db.dropEntries=db.dropEntries||[];db.schedule=(db.schedule||[]).map(s=>({status:s.status||"Scheduled",...s}));
+db.taskRuns=db.taskRuns||[];db.dropEntries=db.dropEntries||[];
+db.orderQueue=db.orderQueue||[];db.orders=db.orders||[];db.shiftExchanges=db.shiftExchanges||[];db.shoppingRequests=db.shoppingRequests||[];
+db.notices=db.notices||[];db.noticeAcks=db.noticeAcks||[];db.budget=db.budget||{openingBalance:0,fundraisers:[],purchases:[]};
+db.budget.fundraisers=db.budget.fundraisers||[];db.budget.purchases=db.budget.purchases||[];
+db.managerLog=db.managerLog||[];db.adjustments=db.adjustments||[];
+db.schedule=(db.schedule||[]).map(s=>({status:s.status||"Scheduled",...s}));
 function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function cats(){return [...new Set(db.items.map(i=>i.category))].sort()}
@@ -380,13 +285,13 @@ function renderMovement(){fillSelect(document.getElementById("moveCategory"));co
 function renderCount(){fillSelect(document.getElementById("countCategory"));const q=document.getElementById("countSearch").value.toLowerCase(),c=document.getElementById("countCategory").value;const arr=db.items.filter(i=>i.active).filter(i=>(!c||i.category===c)&&(!q||(i.name+" "+i.unitSize).toLowerCase().includes(q)));document.getElementById("countBody").innerHTML=arr.map(i=>`<tr><td><b>${esc(i.name)}</b></td><td>${esc(i.unitSize)}</td><td>${esc(i.distributor)}</td><td>${esc(i.parType)}</td><td>${i.parValue||0}</td><td>${i.parType==="Case"?`<input type="number" min="0" step="1" value="${i.countCases||0}" data-count="${i.id}" data-field="countCases"><div class="small">${i.caseQty}/case</div>`:"—"}</td><td>${i.parType==="Case"&&i.packQty>1?`<input type="number" min="0" step="1" value="${i.countPacks||0}" data-count="${i.id}" data-field="countPacks"><div class="small">${i.packQty}/pack</div>`:"—"}</td><td><input type="number" min="0" step="1" value="${i.countSingles||0}" data-count="${i.id}" data-field="countSingles"></td><td>${i.parType==="Case"?totalUnits(i):i.countSingles||0}</td><td><span class="pill">${suggested(i)} ${esc(i.parType.toLowerCase())}${suggested(i)===1?"":"s"}</span></td></tr>`).join("")}
 function renderOrders(){const g={};db.items.filter(i=>i.active&&suggested(i)>0).forEach(i=>(g[i.distributor]??=[]).push(i));document.getElementById("ordersContainer").innerHTML=Object.keys(g).sort().map(d=>`<div class="order-group"><h3>${esc(d)}</h3><div class="order-list">${g[d].map(i=>`<div class="order-line"><span><b>${esc(i.name)}</b><br><span class="small">${esc(i.unitSize)} • PAR ${i.parValue} ${esc(i.parType.toLowerCase())}${i.parValue===1?"":"s"}</span></span><span><b>${suggested(i)}</b> ${esc(i.parType.toLowerCase())}${suggested(i)===1?"":"s"}</span></div>`).join("")}</div></div>`).join("")||'<div class="notice">No items are currently below PAR.</div>'}
 function renderItems(){fillSelect(document.getElementById("itemCategory"));const q=document.getElementById("itemSearch").value.toLowerCase(),c=document.getElementById("itemCategory").value;const arr=db.items.filter(i=>(!c||i.category===c)&&(!q||(i.name+" "+i.unitSize+" "+i.distributor).toLowerCase().includes(q)));document.getElementById("itemsBody").innerHTML=arr.map(i=>`<tr><td><b>${esc(i.name)}</b></td><td>${esc(i.category)}</td><td>${esc(i.unitSize)}</td><td>${i.caseQty}</td><td>${i.packQty||0}</td><td>${esc(i.parType)}</td><td>${i.parValue||0}</td><td>${esc(i.distributor)}</td><td>${i.active?"Active":"Inactive"}</td><td><button class="btn" data-edit-item="${i.id}">Edit</button></td></tr>`).join("")}
-function renderSettings(){renderTaskTemplates();document.getElementById("bartenderList").innerHTML=db.bartenders.map(b=>`<div class="order-line"><span><b>${esc(b.name)}</b> <span class="small">${b.active!==false?"Active":"Inactive"}</span></span><span class="row"><button class="btn" data-toggle-b="${b.id}">${b.active!==false?"Deactivate":"Activate"}</button><button class="btn danger" data-del-b="${b.id}">Remove</button></span></div>`).join("")||'<div class="muted">No bartenders added yet.</div>';document.getElementById("distList").innerHTML=db.distributors.map((d,idx)=>`<div class="order-line"><span>${esc(d)}</span>${["Unassigned","Other / Local"].includes(d)?"":`<button class="btn danger" data-del-dist="${idx}">Remove</button>`}</div>`).join("")}
+function renderSettings(){renderTaskTemplates();const bs=document.getElementById("backupStatus");if(bs)bs.textContent="Last Manual Backup: "+(db.lastManualBackupAt?new Date(db.lastManualBackupAt).toLocaleString():"Not recorded");document.getElementById("bartenderList").innerHTML=db.bartenders.map(b=>`<div class="order-line"><span><b>${esc(b.name)}</b> <span class="small">${b.active!==false?"Active":"Inactive"}</span></span><span class="row"><button class="btn" data-toggle-b="${b.id}">${b.active!==false?"Deactivate":"Activate"}</button><button class="btn danger" data-del-b="${b.id}">Remove</button></span></div>`).join("")||'<div class="muted">No bartenders added yet.</div>';document.getElementById("distList").innerHTML=db.distributors.map((d,idx)=>`<div class="order-line"><span>${esc(d)}</span>${["Unassigned","Other / Local"].includes(d)?"":`<button class="btn danger" data-del-dist="${idx}">Remove</button>`}</div>`).join("")}
 let schedCursor=new Date();schedCursor.setDate(1);
 function fmtTime(t){const [h,m]=t.split(":").map(Number),d=new Date();d.setHours(h,m,0,0);return d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})}
 function eventsForDate(dateStr){return db.events.filter(e=>e.date===dateStr).sort((a,b)=>(a.start||"99:99").localeCompare(b.start||"99:99"))}
 function eventModal(dateStr=null,evt=null){const d=dateStr||evt?.date||today();modal(`<h2>${evt?"Edit":"Add"} Day Event</h2><div class="formgrid"><label>Date<input id="evtDate" type="date" value="${d}"></label><label>Event Name<input id="evtName" value="${esc(evt?.name||"")}" placeholder="Breakfast, Dinner, Meeting, Party..."></label><label>Start Time (optional)<input id="evtStart" type="time" value="${evt?.start||""}"></label><label>End Time (optional)<input id="evtEnd" type="time" value="${evt?.end||""}"></label><label class="full">Notes<input id="evtNotes" value="${esc(evt?.notes||"")}"></label>${evt?"":`<label class="full" style="display:flex;flex-direction:row;align-items:center;gap:8px"><input id="evtAddShift" type="checkbox"> Also create an unassigned shift using the event start/end time</label>`}</div><div class="row" style="margin-top:14px"><button id="saveEventGo" class="btn primary" data-id="${evt?.id||""}">Save Event</button>${evt?`<button id="deleteEventGo" class="btn danger" data-id="${evt.id}">Delete Event</button>`:""}<button id="modalCancel" class="btn">Cancel</button></div>`) }
 function renderSchedule(){const y=schedCursor.getFullYear(),m=schedCursor.getMonth();document.getElementById("scheduleMonthLabel").textContent=schedCursor.toLocaleString([],{month:"long",year:"numeric"});const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay());let h='<div class="schedule-head">'+["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<div>${x}</div>`).join("")+'</div><div class="schedule-month">';for(let n=0;n<42;n++){const d=new Date(start);d.setDate(start.getDate()+n);const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`,out=d.getMonth()!==m,evts=eventsForDate(ds),shifts=db.schedule.filter(s=>s.date===ds).sort((a,b)=>a.start.localeCompare(b.start));h+=`<div class="daycell ${out?"out":""}"><div class="date">${d.getDate()}</div>${evts.map(ev=>`<div class="dayevent"><b>${esc(ev.name)}</b>${(ev.start||ev.end)?`<span class="evt-time">${ev.start?fmtTime(ev.start):""}${ev.start&&ev.end?"–":""}${ev.end?fmtTime(ev.end):""}</span>`:""}${ev.notes?`<br><span class="small">${esc(ev.notes)}</span>`:""}${managerUnlocked?`<br><button class="btn" data-edit-event="${ev.id}" style="margin-top:5px;padding:5px 8px">Edit Event</button>`:""}</div>`).join("")}${shifts.map(s=>{const b=db.bartenders.find(x=>x.id===s.bartenderId);return `<div class="shift"><b>${esc(b?.name||"Unassigned")}</b>${fmtTime(s.start)}–${fmtTime(s.end)}<br><span class="small">${esc(s.status||"Scheduled")}</span>${s.label?`<br><span class="small">${esc(s.label)}</span>`:""}${managerUnlocked?`<br><button class="btn" data-edit-shift="${s.id}" style="margin-top:5px;padding:5px 8px">Edit</button>`:""}</div>`}).join("")}${managerUnlocked&&!out?`<div class="row"><button class="btn ghost" data-add-event="${ds}" style="padding:5px 8px">+ Event</button><button class="btn ghost" data-add-day="${ds}" style="padding:5px 8px">+ Shift</button></div>`:""}</div>`}h+='</div>';document.getElementById("scheduleGrid").innerHTML=h;document.querySelectorAll("[data-manager-only='1']").forEach(x=>x.classList.toggle("hidden",!managerUnlocked))}
-function renderManagerUI(){document.getElementById("modeBadge").textContent=managerUnlocked?"Manager Mode":"Bartender Mode";document.getElementById("managerBtn").classList.toggle("hidden",managerUnlocked);document.getElementById("lockBtn").classList.toggle("hidden",!managerUnlocked);document.querySelectorAll("[data-manager='1']").forEach(x=>x.classList.toggle("hidden",!managerUnlocked));document.querySelectorAll(".manager-task-history").forEach(x=>x.classList.toggle("hidden",!managerUnlocked));document.getElementById("dropHistoryPanel")?.classList.toggle("hidden",!managerUnlocked)}
+function renderManagerUI(){document.getElementById("modeBadge").textContent=managerUnlocked?"Manager Mode":"Bartender Mode";document.getElementById("managerBtn").classList.toggle("hidden",managerUnlocked);document.getElementById("lockBtn").classList.toggle("hidden",!managerUnlocked);document.querySelectorAll("[data-manager='1']").forEach(x=>x.classList.toggle("hidden",!managerUnlocked));document.getElementById("managerRequestPanel")?.classList.toggle("hidden",!managerUnlocked);document.getElementById("noticeManagerPanel")?.classList.toggle("hidden",!managerUnlocked);document.getElementById("newNoticeBtn")?.classList.toggle("hidden",!managerUnlocked);document.querySelectorAll(".manager-task-history").forEach(x=>x.classList.toggle("hidden",!managerUnlocked));document.getElementById("dropHistoryPanel")?.classList.toggle("hidden",!managerUnlocked)}
 
 function renderShiftTracker(){const el=document.getElementById("shiftTracker");if(!el)return;const y=schedCursor.getFullYear(),m=schedCursor.getMonth(),now=new Date();const counts={};db.bartenders.forEach(b=>counts[b.id]=0);db.schedule.forEach(s=>{const d=new Date(s.date+"T12:00:00");if(d.getFullYear()!==y||d.getMonth()!==m||!s.bartenderId||["Cancelled","No Show"].includes(s.status))return;if(s.status==="Worked"||(s.status==="Scheduled"&&d<=now))counts[s.bartenderId]=(counts[s.bartenderId]||0)+1});const rows=db.bartenders.filter(b=>b.active!==false||counts[b.id]>0).map(b=>({name:b.name,count:counts[b.id]||0})).sort((a,b)=>a.count-b.count||a.name.localeCompare(b.name));el.innerHTML=rows.length?`<div class="tablewrap"><table style="min-width:500px"><thead><tr><th>Shift Pick Order</th><th>Bartender</th><th>Shifts Worked</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td><b>${esc(r.name)}</b></td><td>${r.count}</td></tr>`).join("")}</tbody></table></div>`:'<div class="muted">No bartenders yet.</div>'}
 function monthSetupModal(){
@@ -409,9 +314,134 @@ function calcDrop(){const nr=Number(document.getElementById("dropNetRevenue")?.v
 function clearDropForm(){["dropNetRevenue","dropTax","dropChargeCard","dropTips","lottoSales","lottoPayout"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="0"});document.getElementById("lottoBank").value="600";document.getElementById("lottoYesNo").value="No";document.getElementById("lottoFields").classList.add("hidden");calcDrop()}
 function getDropFormData(){const lotto=document.getElementById("lottoYesNo").value==="Yes";return {id:"drop"+Date.now(),bartenderId:Number(document.getElementById("dropBartender").value),date:document.getElementById("dropDate").value,netRevenue:Number(document.getElementById("dropNetRevenue").value||0),tax:Number(document.getElementById("dropTax").value||0),total:Number(document.getElementById("dropTotal").value||0),chargeCard:Number(document.getElementById("dropChargeCard").value||0),cashDrop:Number(document.getElementById("dropCash").value||0),tips:Number(document.getElementById("dropTips").value||0),lotto,lottoBank:Number(document.getElementById("lottoBank").value||600),lottoSales:Number(document.getElementById("lottoSales").value||0),lottoPayout:Number(document.getElementById("lottoPayout").value||0),lottoNet:Number(document.getElementById("lottoNet").value||0),lottoEndingBank:Number(document.getElementById("lottoEndingBank").value||600),lottoDrop:Number(document.getElementById("lottoDrop").value||0),submittedAt:new Date().toISOString()}}
 function reviewDrop(){const d=getDropFormData(),b=db.bartenders.find(x=>x.id===d.bartenderId);if(!d.bartenderId||!d.date)return alert("Select bartender and date.");window.__pendingDrop=d;modal(`<h2>Confirm End of Shift Drop</h2><div class="order-line"><span>Bartender</span><b>${esc(b?.name||"")}</b></div><div class="order-line"><span>Date</span><b>${esc(d.date)}</b></div><div class="order-line"><span>Net Revenue</span><b>$${d.netRevenue.toFixed(2)}</b></div><div class="order-line"><span>Tax</span><b>$${d.tax.toFixed(2)}</b></div><div class="order-line"><span>Total</span><b>$${d.total.toFixed(2)}</b></div><div class="order-line"><span>Charge Card</span><b>$${d.chargeCard.toFixed(2)}</b></div><div class="order-line"><span>Cash Drop</span><b>$${d.cashDrop.toFixed(2)}</b></div><div class="order-line"><span>Tips</span><b>$${d.tips.toFixed(2)}</b></div>${d.lotto?`<hr><div class="order-line"><span>Lotto Net</span><b>$${d.lottoNet.toFixed(2)}</b></div><div class="order-line"><span>Ending Lotto Bank</span><b>$${d.lottoEndingBank.toFixed(2)}</b></div><div class="order-line"><span>Lotto Drop</span><b>$${d.lottoDrop.toFixed(2)}</b></div>`:""}<div class="row" style="margin-top:14px"><button id="confirmDropSubmit" class="btn primary">Submit Drop</button><button id="modalCancel" class="btn">Cancel</button></div>`) }
-function renderDropHistory(){const el=document.getElementById("dropHistory");if(!el)return;const q=(document.getElementById("dropHistorySearch")?.value||"").toLowerCase(),rows=[...db.dropEntries].reverse().filter(d=>{const b=db.bartenders.find(x=>x.id===d.bartenderId);return !q||(d.date+" "+(b?.name||"")).toLowerCase().includes(q)});el.innerHTML=rows.map(d=>{const b=db.bartenders.find(x=>x.id===d.bartenderId);return `<div class="order-line"><span><b>${esc(d.date)} • ${esc(b?.name||"Unassigned")}</b><br><span class="small">Cash $${d.cashDrop.toFixed(2)} • Tips $${d.tips.toFixed(2)}${d.lotto?` • Lotto Drop $${d.lottoDrop.toFixed(2)}`:""}</span></span>${managerUnlocked?`<button class="btn danger" data-delete-drop="${d.id}">Delete</button>`:""}</div>`}).join("")||'<div class="muted">No drop entries yet.</div>'}
+function renderDropHistory(){
+  const el=document.getElementById("dropHistory");if(!el)return;
+  const q=(document.getElementById("dropHistorySearch")?.value||"").toLowerCase(),
+  rows=[...db.dropEntries].reverse().filter(d=>{const b=db.bartenders.find(x=>x.id===d.bartenderId);return !q||(d.date+" "+(b?.name||"")).toLowerCase().includes(q)});
+  el.innerHTML=rows.map(d=>{const b=db.bartenders.find(x=>x.id===d.bartenderId);return `<div class="order-line">
+    <span><b>${esc(d.date)} • ${esc(b?.name||"Unassigned")}</b><br><span class="small">Cash $${Number(d.cashDrop||0).toFixed(2)} • Tips $${Number(d.tips||0).toFixed(2)}${d.lotto?` • Lotto Drop $${Number(d.lottoDrop||0).toFixed(2)}`:""}${d.managerEdited?` • Manager Edited`:""}</span></span>
+    ${managerUnlocked?`<span class="row"><button class="btn" data-edit-drop="${d.id}">Edit</button><button class="btn danger" data-delete-drop="${d.id}">Delete</button></span>`:""}
+  </div>`}).join("")||'<div class="muted">No drop entries yet.</div>';
+}
 
-function renderAll(){renderDashboard();renderMovement();renderCount();renderOrders();renderItems();renderSettings();renderSchedule();renderShiftTracker();renderTaskSelectors();renderTaskHistory();renderDropSelectors();renderDropHistory();renderManagerUI()}
+
+function money(v){return "$"+Number(v||0).toFixed(2)}
+function bartenderName(id){return db.bartenders.find(b=>b.id===Number(id))?.name||"Unassigned"}
+function itemById(id){return db.items.find(i=>i.id===Number(id))}
+function makeId(prefix){return prefix+Date.now()+Math.random().toString(36).slice(2,7)}
+function htmlTable(headers,rows){return `<table><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c??""}</td>`).join("")}</tr>`).join("")}</tbody></table>`}
+function printReport(title,bodyHtml,opts={}){
+  const w=window.open("","_blank"); if(!w)return alert("Allow pop-ups to print this report.");
+  const landscape=opts.landscape!==false;
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title><style>
+  @page{size:${landscape?"landscape":"portrait"};margin:.35in}
+  *{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111;margin:0;font-size:10pt}
+  h1{font-size:18pt;margin:0 0 4px}h2{font-size:13pt;margin:14px 0 6px}h3{font-size:11pt;margin:12px 0 5px}
+  .sub{color:#555;margin-bottom:12px}.box{border:1px solid #777;padding:8px;margin:8px 0;break-inside:avoid}
+  table{width:100%;border-collapse:collapse;margin:7px 0}th,td{border:1px solid #777;padding:5px;text-align:left;vertical-align:top}
+  th{background:#e5e7eb}.money{text-align:right}.event{background:#fee2e2;border-left:5px solid #b91c2b;padding:5px;margin:3px 0;font-weight:700}
+  .calendar{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid #555;border-left:1px solid #555}
+  .dow{font-weight:700;text-align:center;background:#e5e7eb;border-right:1px solid #555;border-bottom:1px solid #555;padding:4px}
+  .day{min-height:1.05in;border-right:1px solid #555;border-bottom:1px solid #555;padding:4px;overflow:hidden}
+  .date{font-weight:700}.shift{font-size:8.5pt;border-top:1px solid #bbb;padding-top:2px;margin-top:2px}.marker{display:inline-block;background:#b91c2b;color:#fff;padding:1px 4px;font-size:7.5pt;font-weight:700}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style></head><body><h1>${esc(title)}</h1><div class="sub">Joshua Palms Canteen Crew • VFW Post 2924</div>${bodyHtml}</body></html>`);
+  w.document.close();w.focus();setTimeout(()=>w.print(),250);
+}
+
+function addMovementToOrderQueue(item){
+  const qtyType=item.parType==="Case"?"Case":item.parType==="Bottle"?"Bottle":item.parType==="Keg"?"Keg":"Each";
+  let line=db.orderQueue.find(q=>q.itemId===item.id&&q.distributor===item.distributor&&q.status==="Pending");
+  if(line)line.qty=Number(line.qty||0)+1;
+  else db.orderQueue.push({id:makeId("oq"),itemId:item.id,distributor:item.distributor,qty:1,unit:qtyType,status:"Pending",createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()});
+  if(line)line.updatedAt=new Date().toISOString();
+}
+function applyReceivedToInventory(item,qty){
+  qty=Number(qty||0);if(!item||qty<=0)return;
+  if(item.parType==="Case")item.countCases=Number(item.countCases||0)+qty;
+  else item.countSingles=Number(item.countSingles||0)+qty;
+}
+function renderOrders(){
+  const el=document.getElementById("ordersContainer"); if(!el)return;
+  const grouped={};db.orderQueue.filter(q=>q.status==="Pending"&&q.qty>0).forEach(q=>(grouped[q.distributor]??=[]).push(q));
+  let html=Object.keys(grouped).sort().map(dist=>`<div class="order-group"><h3>${esc(dist)}</h3><div class="order-list">
+    ${grouped[dist].map(q=>{const i=itemById(q.itemId);return `<div class="order-line"><span><b>${esc(i?.name||"Deleted item")}</b><br><span class="small">${esc(i?.unitSize||"")} • movement-driven replacement</span></span><span class="row"><input style="width:85px" type="number" min="0" step="1" value="${q.qty}" data-orderq="${q.id}"><span>${esc(q.unit)}${q.qty===1?"":"s"}</span></span></div>`}).join("")}
+    <div class="row" style="margin-top:10px"><button class="btn primary" data-place-order="${esc(dist)}">Place ${esc(dist)} Order</button></div>
+  </div></div>`).join("");
+  const parLines=db.items.filter(i=>i.active&&suggested(i)>0);
+  html+=`<div class="panel" style="margin-top:16px"><h3>PAR Planning Reference</h3>${parLines.length?parLines.slice(0,50).map(i=>`<div class="order-line"><span>${esc(i.name)}</span><span>${suggested(i)} ${esc(i.parType.toLowerCase())}${suggested(i)===1?"":"s"}</span></div>`).join(""):'<div class="muted">No PAR shortages currently calculated.</div>'}</div>`;
+  el.innerHTML=html||'<div class="notice">No pending distributor replacements yet.</div>';
+  const placed=document.getElementById("placedOrdersContainer");
+  placed.innerHTML=[...db.orders].reverse().map(o=>`<div class="order-group"><h3>${esc(o.distributor)} • ${esc(o.status)}</h3><div class="order-list">
+    <div class="small">Order Date: ${esc(o.orderDate||"—")} • Delivery Date: ${esc(o.deliveryDate||"—")}</div>
+    ${o.lines.map(l=>{const i=itemById(l.itemId);return `<div class="order-line"><span>${esc(i?.name||"Deleted item")}</span><span>Ordered ${l.orderedQty} ${esc(l.unit)}${l.orderedQty===1?"":"s"}${o.status==="Delivered"?` • Received ${l.receivedQty||0}`:""}</span></div>`}).join("")}
+    <div class="row" style="margin-top:8px">${o.status!=="Delivered"?`<button class="btn good" data-receive-order="${o.id}">Receive Delivery</button>`:""}<button class="btn" data-print-one-order="${o.id}">Print</button></div>
+  </div></div>`).join("")||'<div class="muted">No placed orders yet.</div>';
+}
+
+function renderRequests(){
+  const sels=["exchangeRequester","shoppingRequester"];
+  sels.forEach(id=>{const e=document.getElementById(id);if(!e)return;const v=e.value;e.innerHTML='<option value="">Select bartender</option>'+activeBartenders().map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join("");e.value=v});
+  const rep=document.getElementById("exchangeReplacement");if(rep){const v=rep.value;rep.innerHTML='<option value="">Open to Anyone</option>'+activeBartenders().map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join("");rep.value=v}
+  renderExchangeShiftChoices();
+  const open=db.shiftExchanges.filter(x=>x.status==="Pending"&&!x.replacementBartenderId);
+  document.getElementById("openExchangeList").innerHTML=open.map(x=>{const s=db.schedule.find(a=>a.id===x.shiftId);return `<div class="action-item"><b>${esc(bartenderName(x.requesterId))}</b> needs coverage for ${esc(s?.date||"")} ${s?fmtTime(s.start)+"–"+fmtTime(s.end):""}<div class="row" style="margin-top:6px"><select data-volunteer-select="${x.id}"><option value="">Select your name</option>${activeBartenders().filter(b=>b.id!==x.requesterId).map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join("")}</select><button class="btn" data-volunteer="${x.id}">I Can Cover</button></div></div>`}).join("")||'<div class="muted">No open shift requests.</div>';
+  document.getElementById("managerRequestPanel")?.classList.toggle("hidden",!managerUnlocked);
+  if(managerUnlocked){
+    document.getElementById("managerExchangeList").innerHTML=[...db.shiftExchanges].reverse().map(x=>{const s=db.schedule.find(a=>a.id===x.shiftId);return `<div class="order-line"><span><b>${esc(s?.date||"")} ${s?fmtTime(s.start)+"–"+fmtTime(s.end):""}</b><br><span class="small">${esc(bartenderName(x.requesterId))} → ${x.replacementBartenderId?esc(bartenderName(x.replacementBartenderId)):"Open"} • ${esc(x.status)}${x.notes?` • ${esc(x.notes)}`:""}</span></span><span class="row">${x.status==="Pending"&&x.replacementBartenderId?`<button class="btn good" data-approve-ex="${x.id}">Approve</button>`:""}${x.status==="Pending"?`<button class="btn danger" data-deny-ex="${x.id}">Deny</button>`:""}</span></div>`}).join("")||'<div class="muted">No exchange requests.</div>';
+    document.getElementById("managerShoppingList").innerHTML=[...db.shoppingRequests].reverse().map(r=>`<div class="order-line"><span><b>${esc(r.item)}</b> — ${esc(r.qty||"")}</span><span class="row"><span class="small">${esc(bartenderName(r.requesterId))} • ${esc(r.urgency)} • ${esc(r.status)}</span>${r.status==="Requested"?`<button class="btn good" data-shop-status="${r.id}" data-status="Approved">Approve</button>`:""}${["Requested","Approved"].includes(r.status)?`<button class="btn" data-shop-status="${r.id}" data-status="Purchased">Purchased</button>`:""}${r.status!=="Received"?`<button class="btn" data-shop-status="${r.id}" data-status="Received">Received</button>`:""}</span></div>`).join("")||'<div class="muted">No shopping requests.</div>';
+  }
+}
+function renderExchangeShiftChoices(){
+  const req=Number(document.getElementById("exchangeRequester")?.value||0),sel=document.getElementById("exchangeShift");if(!sel)return;
+  const now=today(),shifts=db.schedule.filter(s=>s.bartenderId===req&&s.date>=now&&!["Cancelled","No Show"].includes(s.status)).sort((a,b)=>a.date.localeCompare(b.date)||a.start.localeCompare(b.start));
+  sel.innerHTML='<option value="">Select shift</option>'+shifts.map(s=>`<option value="${s.id}">${esc(s.date)} • ${fmtTime(s.start)}–${fmtTime(s.end)}${s.label?" • "+esc(s.label):""}</option>`).join("");
+}
+
+function renderNotices(){
+  const now=today(),active=db.notices.filter(n=>n.status!=="Archived"&&(!n.expires||n.expires>=now)).sort((a,b)=>(b.publishedAt||"").localeCompare(a.publishedAt||""));
+  document.getElementById("newNoticeBtn")?.classList.toggle("hidden",!managerUnlocked);
+  document.getElementById("noticeManagerPanel")?.classList.toggle("hidden",!managerUnlocked);
+  document.getElementById("noticeList").innerHTML=active.map(n=>{const acks=db.noticeAcks.filter(a=>a.noticeId===n.id);return `<div class="notice-card ${n.required?"required":""}"><div class="row"><h3 style="margin:0">${esc(n.title)}</h3>${n.required?'<span class="badge">REQUIRED REVIEW</span>':""}</div><div class="small">${esc(n.category||"Notice")} • Effective ${esc(n.effectiveDate||n.publishedAt?.slice(0,10)||"")}</div><p>${esc(n.body).replace(/\n/g,"<br>")}</p>${n.required?`<div class="row"><select data-ack-select="${n.id}"><option value="">Select your name</option>${activeBartenders().filter(b=>!acks.some(a=>a.bartenderId===b.id)).map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join("")}</select><button class="btn primary" data-ack-notice="${n.id}">I Have Reviewed This</button></div><div class="small">${acks.length} acknowledgment${acks.length===1?"":"s"} recorded</div>`:""}</div>`}).join("")||'<div class="muted">No active notices.</div>';
+  if(managerUnlocked)document.getElementById("noticeAckManager").innerHTML=db.notices.map(n=>{const acks=db.noticeAcks.filter(a=>a.noticeId===n.id);const pending=activeBartenders().filter(b=>!acks.some(a=>a.bartenderId===b.id));return `<div class="action-item"><b>${esc(n.title)}</b><br><span class="small">Reviewed: ${acks.map(a=>bartenderName(a.bartenderId)).join(", ")||"None"}<br>Pending: ${pending.map(b=>b.name).join(", ")||"None"}</span></div>`}).join("")||'<div class="muted">No notices.</div>';
+}
+
+function budgetTotals(){
+  const b=db.budget||{openingBalance:0,fundraisers:[],purchases:[]},raised=b.fundraisers.reduce((s,x)=>s+Number(x.amount||0),0),spent=b.purchases.reduce((s,x)=>s+Number(x.actualCost||0),0);
+  const committed=b.purchases.filter(x=>["Approved","Ordered"].includes(x.status)).reduce((s,x)=>s+Math.max(0,Number(x.approvedAmount||0)-Number(x.actualCost||0)),0);
+  const available=Number(b.openingBalance||0)+raised-spent;return {raised,spent,committed,available,after:available-committed};
+}
+function renderBudget(){
+  if(!document.getElementById("budgetOpening"))return;const t=budgetTotals();
+  document.getElementById("budgetOpening").textContent=money(db.budget.openingBalance);document.getElementById("budgetRaised").textContent=money(t.raised);document.getElementById("budgetSpent").textContent=money(t.spent);document.getElementById("budgetAvailable").textContent=money(t.available);document.getElementById("budgetCommitted").textContent=money(t.committed);document.getElementById("budgetAfterCommit").textContent=money(t.after);
+  document.getElementById("fundraiserList").innerHTML=[...db.budget.fundraisers].reverse().map(f=>`<div class="order-line"><span><b>${esc(f.event)}</b><br><span class="small">${esc(f.date)} • ${esc(f.type||"Fundraiser")}</span></span><span class="row"><b>${money(f.amount)}</b><button class="btn" data-edit-fund="${f.id}">Edit</button></span></div>`).join("")||'<div class="muted">No fundraiser income recorded.</div>';
+  document.getElementById("budgetPurchaseList").innerHTML=[...db.budget.purchases].reverse().map(p=>`<div class="order-line"><span><b>${esc(p.item)}</b><br><span class="small">${esc(p.status)} • Approved ${money(p.approvedAmount)}${p.orderDate?` • Ordered ${esc(p.orderDate)}`:""}${p.receivedDate?` • Received ${esc(p.receivedDate)}`:""}</span></span><span class="row"><b>${p.actualCost?money(p.actualCost):"—"}</b><button class="btn" data-edit-budget-purchase="${p.id}">Edit</button></span></div>`).join("")||'<div class="muted">No approved purchases recorded.</div>';
+}
+function renderManagerLog(){
+  const l=document.getElementById("managerLogList");if(l)l.innerHTML=[...db.managerLog].reverse().map(x=>`<div class="action-item"><b>${esc(x.date)} • ${esc(x.category||"General")}</b><br>${esc(x.text)}${x.followup?`<br><span class="small">Follow-up: ${esc(x.followup)}</span>`:""}</div>`).join("")||'<div class="muted">No manager log entries.</div>';
+  const a=document.getElementById("adjustmentList");if(a)a.innerHTML=[...db.adjustments].reverse().map(x=>{const i=itemById(x.itemId);return `<div class="order-line"><span><b>${esc(i?.name||"Deleted item")}</b><br><span class="small">${esc(x.date)} • ${esc(x.reason)} • ${esc(bartenderName(x.bartenderId))}</span></span><span>${x.qty} ${esc(x.unit)}</span></div>`}).join("")||'<div class="muted">No inventory adjustments.</div>';
+}
+function renderManagerActionCenter(){
+  if(!managerUnlocked)return;
+  const dash=document.querySelector("#dashboard .panel");if(!dash)return;
+  let box=document.getElementById("managerActionCenter");if(!box){box=document.createElement("div");box.id="managerActionCenter";box.className="panel";document.getElementById("dashboard").prepend(box)}
+  const pendingShop=db.shoppingRequests.filter(r=>r.status==="Requested").length,pendingEx=db.shiftExchanges.filter(r=>r.status==="Pending").length,pendingOrders=db.orderQueue.filter(q=>q.status==="Pending"&&q.qty>0).length,awaiting=db.orders.filter(o=>o.status!=="Delivered").length,incomplete=db.taskRuns.filter(r=>r.status!=="Completed").length,unacked=db.notices.filter(n=>n.required&&n.status!=="Archived").reduce((sum,n)=>sum+activeBartenders().filter(b=>!db.noticeAcks.some(a=>a.noticeId===n.id&&a.bartenderId===b.id)).length,0);
+  box.innerHTML=`<h2>Manager Action Center</h2><div class="summarygrid"><div class="summarybox">Shopping Requests<strong>${pendingShop}</strong></div><div class="summarybox">Shift Exchanges<strong>${pendingEx}</strong></div><div class="summarybox">Pending Order Lines<strong>${pendingOrders}</strong></div><div class="summarybox">Awaiting Delivery<strong>${awaiting}</strong></div><div class="summarybox">Incomplete Task Runs<strong>${incomplete}</strong></div><div class="summarybox">Required Reviews Pending<strong>${unacked}</strong></div></div>`;
+}
+
+function printCompletedSchedule(){
+  const y=schedCursor.getFullYear(),m=schedCursor.getMonth(),label=schedCursor.toLocaleString([],{month:"long",year:"numeric"});
+  const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay());
+  let cal='<div class="calendar">'+["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="dow">${d}</div>`).join("");
+  for(let n=0;n<42;n++){const d=new Date(start);d.setDate(start.getDate()+n);const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`,out=d.getMonth()!==m,ev=eventsForDate(ds),sh=db.schedule.filter(s=>s.date===ds).sort((a,b)=>a.start.localeCompare(b.start));
+    cal+=`<div class="day" style="${out?"color:#999;":""}"><div class="date">${d.getDate()} ${ev.length?'<span class="marker">EVENT</span>':""}</div>${sh.map(s=>`<div class="shift"><b>${esc(bartenderName(s.bartenderId))}</b> ${fmtTime(s.start)}–${fmtTime(s.end)}${s.label?`<br>${esc(s.label)}`:""}</div>`).join("")}</div>`}
+  cal+='</div>';
+  const monthEvents=db.events.filter(e=>{const d=new Date(e.date+"T12:00:00");return d.getFullYear()===y&&d.getMonth()===m}).sort((a,b)=>a.date.localeCompare(b.date)||(a.start||"").localeCompare(b.start||""));
+  const evhtml=monthEvents.length?`<h2>Events This Month</h2>${monthEvents.map(e=>`<div class="event">${esc(e.date)} — ${esc(e.name)}${e.start?` • ${fmtTime(e.start)}${e.end?"–"+fmtTime(e.end):""}`:""}${e.notes?`<br><span style="font-weight:normal">${esc(e.notes)}</span>`:""}</div>`).join("")}`:"";
+  printReport(`Canteen Crew Bartender Schedule — ${label}`,cal+evhtml,{landscape:true});
+}
+
+function renderAll(){renderDashboard();renderMovement();renderCount();renderOrders();renderItems();renderSettings();renderSchedule();renderShiftTracker();renderTaskSelectors();renderTaskHistory();renderDropSelectors();renderDropHistory();renderRequests();renderNotices();renderBudget();renderManagerLog();renderManagerUI();renderManagerActionCenter()}
 function switchTab(id){document.querySelectorAll(".tab").forEach(x=>x.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("active",x.dataset.tab===id))}
 document.getElementById("nav").onclick=e=>{if(e.target.tagName!=="BUTTON")return;if(e.target.dataset.manager==="1"&&!managerUnlocked)return;switchTab(e.target.dataset.tab)};
 document.getElementById("managerBtn").onclick=async()=>{if(!db.pinHash){modal('<h2>Create Manager PIN</h2><div class="formgrid"><label class="full">New PIN<input id="pin1" type="password"></label><label class="full">Confirm PIN<input id="pin2" type="password"></label></div><div class="row" style="margin-top:14px"><button id="saveNewPin" class="btn primary">Save PIN</button><button id="modalCancel" class="btn">Cancel</button></div>');return}modal('<h2>Manager Unlock</h2><label>PIN<input id="unlockPin" type="password" style="width:100%;margin-top:8px"></label><div class="row" style="margin-top:14px"><button id="unlockGo" class="btn primary">Unlock</button><button id="modalCancel" class="btn">Cancel</button></div>')};
@@ -433,21 +463,88 @@ document.getElementById("prevMonthBtn").onclick=()=>{schedCursor.setMonth(schedC
 function shiftModal(date=null,s=null){const abs=activeBartenders();if(!abs.length)return alert("Add bartenders in Settings first.");modal(`<h2>${s?"Edit":"Add"} Shift</h2><div class="formgrid"><label>Date<input id="sDate" type="date" value="${date||s?.date||today()}"></label><label>Bartender<select id="sBart"><option value="">Unassigned</option>${abs.map(b=>`<option value="${b.id}" ${s?.bartenderId===b.id?"selected":""}>${esc(b.name)}</option>`).join("")}</select></label><label>Start<input id="sStart" type="time" value="${s?.start||"12:00"}"></label><label>Scheduled End<input id="sEnd" type="time" value="${s?.end||"17:00"}"></label><label>Status<select id="sStatus">${["Scheduled","Worked","Cancelled","No Show"].map(x=>`<option ${s?.status===x?"selected":""}>${x}</option>`).join("")}</select></label><label>Label / Notes<input id="sLabel" value="${esc(s?.label||"")}"></label></div><div class="row" style="margin-top:14px"><button id="saveShift" data-id="${s?.id||""}" class="btn primary">Save</button>${s?`<button id="deleteShift" data-id="${s.id}" class="btn danger">Delete</button>`:""}<button id="modalCancel" class="btn">Cancel</button></div>`) }
 document.getElementById("addShiftBtn").onclick=()=>shiftModal();
 document.getElementById("scheduleGrid").onclick=e=>{if(!managerUnlocked)return;if(e.target.dataset.addEvent)eventModal(e.target.dataset.addEvent);const eid=Number(e.target.dataset.editEvent);if(eid)eventModal(null,db.events.find(ev=>ev.id===eid));if(e.target.dataset.addDay)shiftModal(e.target.dataset.addDay);const id=Number(e.target.dataset.editShift);if(id)shiftModal(null,db.schedule.find(s=>s.id===id))};
-document.getElementById("backupBtn").onclick=()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`CIM-backup-${today()}.json`;a.click();URL.revokeObjectURL(a.href)};
+document.getElementById("backupBtn").onclick=()=>{db.lastManualBackupAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(db));const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`CIM-backup-${today()}.json`;a.click();URL.revokeObjectURL(a.href);renderAll()};
 document.getElementById("restoreInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x.items)throw Error("Invalid backup");if(confirm("Replace current data with this backup?")){db=x;save();alert("Backup restored.")}}catch(err){alert(err.message)}e.target.value=""};
 document.getElementById("changePinBtn").onclick=()=>modal('<h2>Change Manager PIN</h2><div class="formgrid"><label class="full">Current PIN<input id="oldPin" type="password"></label><label>New PIN<input id="newPin1" type="password"></label><label>Confirm<input id="newPin2" type="password"></label></div><div class="row" style="margin-top:14px"><button id="changePinGo" class="btn primary">Change</button><button id="modalCancel" class="btn">Cancel</button></div>');
 document.getElementById("clearDataBtn").onclick=()=>modal('<h2>Clear All Data</h2><div class="formgrid"><label class="full">Manager PIN<input id="clearPin" type="password"></label><label class="full">Type CLEAR<input id="clearWord"></label></div><div class="row" style="margin-top:14px"><button id="clearGo" class="btn danger">Clear All Data</button><button id="modalCancel" class="btn">Cancel</button></div>');
 
 document.getElementById("setupMonthBtn").onclick=monthSetupModal;
-document.getElementById("printScheduleBtn").onclick=()=>{document.getElementById("schedule").classList.add("printing");window.print();setTimeout(()=>document.getElementById("schedule").classList.remove("printing"),300)};
+document.getElementById("printScheduleBtn").onclick=printCompletedSchedule;
 document.getElementById("refreshTrackerBtn").onclick=renderShiftTracker;
 document.getElementById("loadTasksBtn").onclick=renderTaskChecklist;document.getElementById("taskShiftType").onchange=renderTaskChecklist;document.getElementById("taskDate").onchange=renderTaskChecklist;document.getElementById("taskBartender").onchange=renderTaskChecklist;document.getElementById("saveTasksBtn").onclick=()=>saveTaskRun(false);document.getElementById("completeTasksBtn").onclick=()=>saveTaskRun(true);
 document.getElementById("templateShiftType").onchange=renderTaskTemplates;document.getElementById("addTaskTemplateBtn").onclick=()=>{const type=document.getElementById("templateShiftType").value,t=document.getElementById("newTaskText").value.trim();if(!t)return;db.taskTemplates[type].push(t);document.getElementById("newTaskText").value="";save()};document.getElementById("taskTemplateList").onclick=e=>{const idx=Number(e.target.dataset.delTemplate);if(Number.isNaN(idx))return;const type=document.getElementById("templateShiftType").value;db.taskTemplates[type].splice(idx,1);save()};
-["dropNetRevenue","dropTax","dropChargeCard","lottoBank","lottoSales","lottoPayout"].forEach(id=>document.getElementById(id).oninput=calcDrop);document.getElementById("lottoYesNo").onchange=()=>{document.getElementById("lottoFields").classList.toggle("hidden",document.getElementById("lottoYesNo").value!=="Yes");calcDrop()};document.getElementById("reviewDropBtn").onclick=reviewDrop;document.getElementById("clearDropFormBtn").onclick=clearDropForm;document.getElementById("dropHistorySearch").oninput=renderDropHistory;document.getElementById("printDropHistoryBtn").onclick=()=>window.print();
+["dropNetRevenue","dropTax","dropChargeCard","lottoBank","lottoSales","lottoPayout"].forEach(id=>document.getElementById(id).oninput=calcDrop);document.getElementById("lottoYesNo").onchange=()=>{document.getElementById("lottoFields").classList.toggle("hidden",document.getElementById("lottoYesNo").value!=="Yes");calcDrop()};document.getElementById("reviewDropBtn").onclick=reviewDrop;document.getElementById("clearDropFormBtn").onclick=clearDropForm;document.getElementById("dropHistorySearch").oninput=renderDropHistory;
 
-document.addEventListener("click",async e=>{if(e.target.id==="modalCancel")closeModal();if(e.target.id==="createMonthShifts")createMonthShiftsFromSetup();if(e.target.id==="saveEventGo"){const id=Number(e.target.dataset.id),obj={date:document.getElementById("evtDate").value,name:document.getElementById("evtName").value.trim(),start:document.getElementById("evtStart").value,end:document.getElementById("evtEnd").value,notes:document.getElementById("evtNotes").value.trim()};if(!obj.date||!obj.name)return alert("Date and Event Name are required.");if(id)Object.assign(db.events.find(ev=>ev.id===id),obj);else{const makeShift=document.getElementById("evtAddShift")?.checked;if(makeShift&&(!obj.start||!obj.end))return alert("Enter both start and end time if you want CIM to create an event shift.");db.events.push({id:db.nextEventId++,...obj});if(makeShift)db.schedule.push({id:db.nextShiftId++,date:obj.date,bartenderId:null,start:obj.start,end:obj.end,status:"Scheduled",label:obj.name})}save();closeModal()}
+
+document.getElementById("exchangeRequester").onchange=renderExchangeShiftChoices;
+document.getElementById("submitExchangeBtn").onclick=()=>{
+  const requesterId=Number(document.getElementById("exchangeRequester").value),shiftId=Number(document.getElementById("exchangeShift").value),replacementBartenderId=Number(document.getElementById("exchangeReplacement").value)||null,notes=document.getElementById("exchangeNotes").value.trim();
+  if(!requesterId||!shiftId)return alert("Select your name and scheduled shift.");
+  db.shiftExchanges.push({id:makeId("ex"),requesterId,shiftId,replacementBartenderId,notes,status:"Pending",submittedAt:new Date().toISOString()});document.getElementById("exchangeNotes").value="";save();alert("Shift exchange request submitted for manager approval.");
+};
+document.getElementById("submitShoppingBtn").onclick=()=>{
+  const requesterId=Number(document.getElementById("shoppingRequester").value),item=document.getElementById("shoppingItem").value.trim(),qty=document.getElementById("shoppingQty").value.trim(),urgency=document.getElementById("shoppingUrgency").value,notes=document.getElementById("shoppingNotes").value.trim();
+  if(!requesterId||!item)return alert("Select your name and enter the requested item.");
+  db.shoppingRequests.push({id:makeId("shop"),requesterId,item,qty,urgency,notes,status:"Requested",submittedAt:new Date().toISOString()});
+  document.getElementById("shoppingItem").value="";document.getElementById("shoppingQty").value="";document.getElementById("shoppingNotes").value="";save();alert("Shopping request submitted.");
+};
+document.getElementById("newNoticeBtn").onclick=()=>{if(!managerUnlocked)return;modal(`<h2>Publish Notice</h2><div class="formgrid"><label>Title<input id="nTitle"></label><label>Category<select id="nCategory"><option>Procedure</option><option>Training</option><option>Policy</option><option>Announcement</option></select></label><label>Effective Date<input id="nEffective" type="date" value="${today()}"></label><label>Expires (optional)<input id="nExpires" type="date"></label><label class="full">Message<textarea id="nBody" rows="6"></textarea></label><label class="full" style="display:flex;flex-direction:row;align-items:center;gap:8px"><input id="nRequired" type="checkbox"> Require every bartender to acknowledge review</label></div><div class="row" style="margin-top:12px"><button id="saveNoticeGo" class="btn primary">Publish</button><button id="modalCancel" class="btn">Cancel</button></div>`)};
+document.getElementById("addFundraiserBtn").onclick=()=>modal(`<h2>Add Fundraiser</h2><div class="formgrid"><label>Event<input id="fEvent"></label><label>Date<input id="fDate" type="date" value="${today()}"></label><label>Type<input id="fType" placeholder="Dinner, raffle, lunch..."></label><label>Amount Raised<input id="fAmount" type="number" min="0" step=".01"></label><label class="full">Notes<input id="fNotes"></label></div><div class="row" style="margin-top:12px"><button id="saveFundraiserGo" class="btn primary">Save</button><button id="modalCancel" class="btn">Cancel</button></div>`);
+document.getElementById("addBudgetPurchaseBtn").onclick=()=>modal(`<h2>Add Approved Purchase</h2><div class="formgrid"><label>Item<input id="bpItem"></label><label>Approved Date<input id="bpApprovedDate" type="date" value="${today()}"></label><label>Approved Amount<input id="bpApprovedAmount" type="number" min="0" step=".01"></label><label>Status<select id="bpStatus"><option>Proposed</option><option selected>Approved</option><option>Ordered</option><option>Received</option><option>Cancelled</option></select></label><label>Order Date<input id="bpOrderDate" type="date"></label><label>Received Date<input id="bpReceivedDate" type="date"></label><label>Actual Cost<input id="bpActualCost" type="number" min="0" step=".01"></label><label>Vendor<input id="bpVendor"></label><label class="full">Notes<input id="bpNotes"></label></div><div class="row" style="margin-top:12px"><button id="saveBudgetPurchaseGo" class="btn primary">Save</button><button id="modalCancel" class="btn">Cancel</button></div>`);
+document.getElementById("addLogBtn").onclick=()=>modal(`<h2>Add Manager Log Entry</h2><div class="formgrid"><label>Date<input id="logDate" type="date" value="${today()}"></label><label>Category<select id="logCategory"><option>General</option><option>Equipment</option><option>Maintenance</option><option>Distributor</option><option>Incident</option><option>Follow-up</option></select></label><label class="full">Entry<textarea id="logText" rows="5"></textarea></label><label class="full">Follow-up / Action<input id="logFollowup"></label></div><div class="row" style="margin-top:12px"><button id="saveLogGo" class="btn primary">Save</button><button id="modalCancel" class="btn">Cancel</button></div>`);
+document.getElementById("addAdjustmentBtn").onclick=()=>modal(`<h2>Inventory Adjustment</h2><div class="formgrid"><label>Item<select id="adjItem">${db.items.filter(i=>i.active).map(i=>`<option value="${i.id}">${esc(i.name)} — ${esc(i.unitSize)}</option>`).join("")}</select></label><label>Bartender<select id="adjBartender"><option value="">Manager / Other</option>${activeBartenders().map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join("")}</select></label><label>Date<input id="adjDate" type="date" value="${today()}"></label><label>Reason<select id="adjReason"><option>Breakage</option><option>Damaged</option><option>Spoiled / Expired</option><option>Inventory Correction</option><option>Other</option></select></label><label>Quantity<input id="adjQty" type="number" min=".01" step=".01" value="1"></label><label>Unit<select id="adjUnit"><option>Bottle</option><option>Case</option><option>Keg</option><option>Each</option></select></label><label class="full">Notes<input id="adjNotes"></label></div><div class="row" style="margin-top:12px"><button id="saveAdjustmentGo" class="btn primary">Save Adjustment</button><button id="modalCancel" class="btn">Cancel</button></div>`);
+
+document.getElementById("printOrders").onclick=()=>{const rows=db.orderQueue.filter(q=>q.status==="Pending"&&q.qty>0).map(q=>[esc(q.distributor),esc(itemById(q.itemId)?.name||""),q.qty,esc(q.unit)]);printReport("Current Distributor Orders",htmlTable(["Distributor","Item","Qty","Unit"],rows))};
+document.getElementById("printOrderHistoryBtn").onclick=()=>{const rows=db.orders.flatMap(o=>o.lines.map(l=>[esc(o.distributor),esc(o.orderDate||""),esc(o.deliveryDate||""),esc(o.status),esc(itemById(l.itemId)?.name||""),l.orderedQty,l.receivedQty||0]));printReport("Distributor Order History",htmlTable(["Distributor","Order Date","Delivery Date","Status","Item","Ordered","Received"],rows))};
+document.getElementById("printShoppingBtn").onclick=()=>{const rows=db.shoppingRequests.filter(r=>["Requested","Approved"].includes(r.status)).map(r=>[esc(r.item),esc(r.qty||""),esc(bartenderName(r.requesterId)),esc(r.urgency),esc(r.status),"",""]);printReport("Canteen Crew Shopping List",htmlTable(["Item","Qty","Requested By","Urgency","Status","Purchased","Cost"],rows))};
+document.getElementById("printExchangeBtn").onclick=()=>{const rows=db.shiftExchanges.map(x=>{const s=db.schedule.find(a=>a.id===x.shiftId);return [esc(s?.date||""),s?fmtTime(s.start)+"–"+fmtTime(s.end):"",esc(bartenderName(x.requesterId)),esc(x.replacementBartenderId?bartenderName(x.replacementBartenderId):"Open"),esc(x.status)]});printReport("Shift Exchange Requests",htmlTable(["Date","Shift","Original Bartender","Replacement","Status"],rows))};
+document.getElementById("printNoticesBtn").onclick=()=>{const body=db.notices.map(n=>`<div class="box"><h2>${esc(n.title)}</h2><div>${esc(n.body).replace(/\n/g,"<br>")}</div>${n.required?`<h3>Acknowledgments</h3>${db.noticeAcks.filter(a=>a.noticeId===n.id).map(a=>`${esc(bartenderName(a.bartenderId))} — ${new Date(a.ackAt).toLocaleString()}`).join("<br>")||"None"}`:""}</div>`).join("");printReport("Canteen Notices & Acknowledgments",body,{landscape:false})};
+document.getElementById("printBudgetBtn").onclick=()=>{const t=budgetTotals(),body=`<div class="box">Opening ${money(db.budget.openingBalance)} • Raised ${money(t.raised)} • Actual Purchases ${money(t.spent)} • Available ${money(t.available)} • Committed ${money(t.committed)} • Available After Commitments ${money(t.after)}</div><h2>Fundraisers</h2>${htmlTable(["Date","Event","Type","Amount"],db.budget.fundraisers.map(f=>[esc(f.date),esc(f.event),esc(f.type||""),money(f.amount)]))}<h2>Approved Purchases</h2>${htmlTable(["Item","Approved","Status","Actual Cost","Order Date","Received"],db.budget.purchases.map(p=>[esc(p.item),money(p.approvedAmount),esc(p.status),p.actualCost?money(p.actualCost):"",esc(p.orderDate||""),esc(p.receivedDate||"")]))}`;printReport("Canteen Crew Budget Report",body)};
+document.getElementById("printLogBtn").onclick=()=>printReport("Canteen Manager Log",htmlTable(["Date","Category","Entry","Follow-up"],db.managerLog.map(x=>[esc(x.date),esc(x.category||""),esc(x.text),esc(x.followup||"")])),{landscape:false});
+document.getElementById("printAdjustmentsBtn").onclick=()=>printReport("Inventory Adjustments",htmlTable(["Date","Item","Reason","Qty","Unit","Bartender"],db.adjustments.map(x=>[esc(x.date),esc(itemById(x.itemId)?.name||""),esc(x.reason),x.qty,esc(x.unit),esc(bartenderName(x.bartenderId))])));
+
+
+document.getElementById("reportAdjustmentBtn").onclick=()=>{
+  const abs=activeBartenders();if(!abs.length)return alert("A manager must add bartenders first.");
+  modal(`<h2>Report Waste / Breakage</h2><div class="formgrid"><label>Bartender<select id="pubAdjBart">${abs.map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join("")}</select></label><label>Item<select id="pubAdjItem">${db.items.filter(i=>i.active).map(i=>`<option value="${i.id}">${esc(i.name)} — ${esc(i.unitSize)}</option>`).join("")}</select></label><label>Reason<select id="pubAdjReason"><option>Breakage</option><option>Damaged</option><option>Spoiled / Expired</option><option>Other</option></select></label><label>Quantity<input id="pubAdjQty" type="number" min=".01" step=".01" value="1"></label><label>Unit<select id="pubAdjUnit"><option>Bottle</option><option>Case</option><option>Keg</option><option>Each</option></select></label><label class="full">Notes<input id="pubAdjNotes"></label></div><div class="row" style="margin-top:12px"><button id="submitPublicAdjustment" class="btn primary">Submit Adjustment</button><button id="modalCancel" class="btn">Cancel</button></div>`);
+};
+document.getElementById("setOpeningBudgetBtn").onclick=()=>{if(!managerUnlocked)return;modal(`<h2>Set Canteen Crew Opening Balance</h2><p class="muted">Use the current balance of the separate Canteen Crew fundraising fund when you begin tracking it in CIM.</p><label>Opening Balance<input id="openingBudgetValue" type="number" min="0" step=".01" value="${Number(db.budget.openingBalance||0).toFixed(2)}" style="width:100%;margin-top:8px"></label><div class="row" style="margin-top:12px"><button id="saveOpeningBudget" class="btn primary">Save Balance</button><button id="modalCancel" class="btn">Cancel</button></div>`)};
+document.getElementById("printInventoryBtn").onclick=()=>{const rows=db.items.filter(i=>i.active).map(i=>[esc(i.name),esc(i.unitSize),esc(i.distributor),esc(i.parType),i.parValue||0,i.countCases||0,i.countPacks||0,i.countSingles||0,suggested(i)]);printReport("Inventory / PAR Report",htmlTable(["Item","Unit Size","Distributor","PAR Type","PAR","Cases","Packs","Singles","Suggested Order"],rows))};
+document.getElementById("printShiftTrackerBtn").onclick=()=>{const y=schedCursor.getFullYear(),m=schedCursor.getMonth(),now=new Date(),counts={};db.bartenders.forEach(b=>counts[b.id]=0);db.schedule.forEach(s=>{const d=new Date(s.date+"T12:00:00");if(d.getFullYear()!==y||d.getMonth()!==m||!s.bartenderId||["Cancelled","No Show"].includes(s.status))return;if(s.status==="Worked"||(s.status==="Scheduled"&&d<=now))counts[s.bartenderId]=(counts[s.bartenderId]||0)+1});const rows=db.bartenders.map(b=>[esc(b.name),counts[b.id]||0]).sort((a,b)=>a[1]-b[1]);printReport(`Monthly Shift Tracker — ${schedCursor.toLocaleString([],{month:"long",year:"numeric"})}`,htmlTable(["Bartender","Shifts Worked"],rows),{landscape:false})};
+document.getElementById("printTaskHistoryBtn").onclick=()=>{const rows=db.taskRuns.map(r=>[esc(r.date),esc(r.shiftType),esc(bartenderName(r.bartenderId)),`${r.tasks.filter(t=>t.done).length}/${r.tasks.length}`,esc(r.status)]);printReport("Shift Task History",htmlTable(["Date","Shift Type","Bartender","Tasks Complete","Status"],rows))};
+document.getElementById("printDropHistoryBtn").onclick=()=>{const rows=db.dropEntries.map(d=>[esc(d.date),esc(bartenderName(d.bartenderId)),money(d.netRevenue),money(d.tax),money(d.total),money(d.chargeCard),money(d.cashDrop),money(d.tips),d.lotto?money(d.lottoDrop):""]);printReport("End of Shift Drop History",htmlTable(["Date","Bartender","Net Revenue","Tax","Total","Charge Card","Cash Drop","Tips","Lotto Drop"],rows))};
+
+document.addEventListener("click",async e=>{
+if(e.target.id==="submitPublicAdjustment"){const itemId=Number(document.getElementById("pubAdjItem").value),bartenderId=Number(document.getElementById("pubAdjBart").value),qty=Number(document.getElementById("pubAdjQty").value||0),unit=document.getElementById("pubAdjUnit").value;if(qty<=0)return alert("Quantity must be greater than zero.");const it=itemById(itemId);if(it){if(unit==="Case")it.countCases=Math.max(0,Number(it.countCases||0)-qty);else it.countSingles=Math.max(0,Number(it.countSingles||0)-qty)}db.adjustments.push({id:makeId("adj"),itemId,bartenderId,date:today(),reason:document.getElementById("pubAdjReason").value,qty,unit,notes:document.getElementById("pubAdjNotes").value.trim(),createdAt:new Date().toISOString(),submittedByBartender:true});save();closeModal();alert("Waste / breakage report submitted.")}
+if(e.target.id==="saveOpeningBudget"&&managerUnlocked){db.budget.openingBalance=Number(document.getElementById("openingBudgetValue").value||0);save();closeModal()}
+if(e.target.dataset.editFund&&managerUnlocked){const f=db.budget.fundraisers.find(x=>x.id===e.target.dataset.editFund);if(f)modal(`<h2>Edit Fundraiser</h2><div class="formgrid"><label>Event<input id="efEvent" value="${esc(f.event)}"></label><label>Date<input id="efDate" type="date" value="${esc(f.date)}"></label><label>Type<input id="efType" value="${esc(f.type||"")}"></label><label>Amount Raised<input id="efAmount" type="number" min="0" step=".01" value="${f.amount||0}"></label><label class="full">Notes<input id="efNotes" value="${esc(f.notes||"")}"></label></div><div class="row" style="margin-top:12px"><button id="saveFundraiserEdit" data-id="${f.id}" class="btn primary">Save</button><button id="deleteFundraiser" data-id="${f.id}" class="btn danger">Delete</button><button id="modalCancel" class="btn">Cancel</button></div>`)}
+if(e.target.id==="saveFundraiserEdit"&&managerUnlocked){const f=db.budget.fundraisers.find(x=>x.id===e.target.dataset.id);if(f){f.event=document.getElementById("efEvent").value.trim();f.date=document.getElementById("efDate").value;f.type=document.getElementById("efType").value.trim();f.amount=Number(document.getElementById("efAmount").value||0);f.notes=document.getElementById("efNotes").value.trim();save();closeModal()}}
+if(e.target.id==="deleteFundraiser"&&managerUnlocked){if(confirm("Delete this fundraiser entry?")){db.budget.fundraisers=db.budget.fundraisers.filter(x=>x.id!==e.target.dataset.id);save();closeModal()}}
+if(e.target.dataset.editBudgetPurchase&&managerUnlocked){const p=db.budget.purchases.find(x=>x.id===e.target.dataset.editBudgetPurchase);if(p)modal(`<h2>Edit Approved Purchase</h2><div class="formgrid"><label>Item<input id="ebpItem" value="${esc(p.item)}"></label><label>Approved Date<input id="ebpApprovedDate" type="date" value="${esc(p.approvedDate||"")}"></label><label>Approved Amount<input id="ebpApprovedAmount" type="number" min="0" step=".01" value="${p.approvedAmount||0}"></label><label>Status<select id="ebpStatus">${["Proposed","Approved","Ordered","Received","Cancelled"].map(s=>`<option ${p.status===s?"selected":""}>${s}</option>`).join("")}</select></label><label>Order Date<input id="ebpOrderDate" type="date" value="${esc(p.orderDate||"")}"></label><label>Received Date<input id="ebpReceivedDate" type="date" value="${esc(p.receivedDate||"")}"></label><label>Actual Cost<input id="ebpActualCost" type="number" min="0" step=".01" value="${p.actualCost||0}"></label><label>Vendor<input id="ebpVendor" value="${esc(p.vendor||"")}"></label><label class="full">Notes<input id="ebpNotes" value="${esc(p.notes||"")}"></label></div><div class="row" style="margin-top:12px"><button id="saveBudgetPurchaseEdit" data-id="${p.id}" class="btn primary">Save</button><button id="deleteBudgetPurchase" data-id="${p.id}" class="btn danger">Delete</button><button id="modalCancel" class="btn">Cancel</button></div>`)}
+if(e.target.id==="saveBudgetPurchaseEdit"&&managerUnlocked){const p=db.budget.purchases.find(x=>x.id===e.target.dataset.id);if(p){p.item=document.getElementById("ebpItem").value.trim();p.approvedDate=document.getElementById("ebpApprovedDate").value;p.approvedAmount=Number(document.getElementById("ebpApprovedAmount").value||0);p.status=document.getElementById("ebpStatus").value;p.orderDate=document.getElementById("ebpOrderDate").value;p.receivedDate=document.getElementById("ebpReceivedDate").value;p.actualCost=Number(document.getElementById("ebpActualCost").value||0);p.vendor=document.getElementById("ebpVendor").value.trim();p.notes=document.getElementById("ebpNotes").value.trim();save();closeModal()}}
+if(e.target.id==="deleteBudgetPurchase"&&managerUnlocked){if(confirm("Delete this approved purchase?")){db.budget.purchases=db.budget.purchases.filter(x=>x.id!==e.target.dataset.id);save();closeModal()}}
+
+if(e.target.dataset.volunteer){const id=e.target.dataset.volunteer,sel=document.querySelector(`[data-volunteer-select="${id}"]`),bid=Number(sel?.value||0);if(!bid)return alert("Select your name first.");const x=db.shiftExchanges.find(a=>a.id===id);if(x){x.replacementBartenderId=bid;x.volunteeredAt=new Date().toISOString();save();alert("Your offer to cover was submitted for manager approval.")}}
+if(e.target.dataset.approveEx&&managerUnlocked){const x=db.shiftExchanges.find(a=>a.id===e.target.dataset.approveEx),s=x&&db.schedule.find(a=>a.id===x.shiftId);if(x&&s&&x.replacementBartenderId){s.originalBartenderId=s.originalBartenderId||s.bartenderId;s.bartenderId=x.replacementBartenderId;x.status="Approved";x.approvedAt=new Date().toISOString();save()}}
+if(e.target.dataset.denyEx&&managerUnlocked){const x=db.shiftExchanges.find(a=>a.id===e.target.dataset.denyEx);if(x){x.status="Denied";x.deniedAt=new Date().toISOString();save()}}
+if(e.target.dataset.shopStatus&&managerUnlocked){const r=db.shoppingRequests.find(a=>a.id===e.target.dataset.shopStatus);if(r){r.status=e.target.dataset.status;r.statusAt=new Date().toISOString();save()}}
+if(e.target.dataset.ackNotice){const noticeId=e.target.dataset.ackNotice,sel=document.querySelector(`[data-ack-select="${noticeId}"]`),bid=Number(sel?.value||0);if(!bid)return alert("Select your name.");if(!db.noticeAcks.some(a=>a.noticeId===noticeId&&a.bartenderId===bid)){db.noticeAcks.push({id:makeId("ack"),noticeId,bartenderId:bid,ackAt:new Date().toISOString()});save();alert("Review acknowledgment recorded.")}}
+if(e.target.id==="saveNoticeGo"&&managerUnlocked){const title=document.getElementById("nTitle").value.trim(),body=document.getElementById("nBody").value.trim();if(!title||!body)return alert("Title and message are required.");db.notices.push({id:makeId("notice"),title,category:document.getElementById("nCategory").value,effectiveDate:document.getElementById("nEffective").value,expires:document.getElementById("nExpires").value,body,required:document.getElementById("nRequired").checked,status:"Published",publishedAt:new Date().toISOString()});save();closeModal()}
+if(e.target.id==="saveFundraiserGo"&&managerUnlocked){const event=document.getElementById("fEvent").value.trim(),amount=Number(document.getElementById("fAmount").value||0);if(!event)return alert("Event name is required.");db.budget.fundraisers.push({id:makeId("fund"),event,date:document.getElementById("fDate").value,type:document.getElementById("fType").value.trim(),amount,notes:document.getElementById("fNotes").value.trim()});save();closeModal()}
+if(e.target.id==="saveBudgetPurchaseGo"&&managerUnlocked){const item=document.getElementById("bpItem").value.trim();if(!item)return alert("Item is required.");db.budget.purchases.push({id:makeId("bp"),item,approvedDate:document.getElementById("bpApprovedDate").value,approvedAmount:Number(document.getElementById("bpApprovedAmount").value||0),status:document.getElementById("bpStatus").value,orderDate:document.getElementById("bpOrderDate").value,receivedDate:document.getElementById("bpReceivedDate").value,actualCost:Number(document.getElementById("bpActualCost").value||0),vendor:document.getElementById("bpVendor").value.trim(),notes:document.getElementById("bpNotes").value.trim()});save();closeModal()}
+if(e.target.id==="saveLogGo"&&managerUnlocked){const tx=document.getElementById("logText").value.trim();if(!tx)return alert("Enter a log note.");db.managerLog.push({id:makeId("log"),date:document.getElementById("logDate").value,category:document.getElementById("logCategory").value,text:tx,followup:document.getElementById("logFollowup").value.trim(),createdAt:new Date().toISOString()});save();closeModal()}
+if(e.target.id==="saveAdjustmentGo"&&managerUnlocked){const itemId=Number(document.getElementById("adjItem").value),qty=Number(document.getElementById("adjQty").value||0),unit=document.getElementById("adjUnit").value;if(qty<=0)return alert("Quantity must be greater than zero.");const it=itemById(itemId);if(it){if(unit==="Case")it.countCases=Math.max(0,Number(it.countCases||0)-qty);else it.countSingles=Math.max(0,Number(it.countSingles||0)-qty)}db.adjustments.push({id:makeId("adj"),itemId,bartenderId:Number(document.getElementById("adjBartender").value)||null,date:document.getElementById("adjDate").value,reason:document.getElementById("adjReason").value,qty,unit,notes:document.getElementById("adjNotes").value.trim(),createdAt:new Date().toISOString()});save();closeModal()}
+if(e.target.dataset.orderq){const q=db.orderQueue.find(a=>a.id===e.target.dataset.orderq);if(q){q.qty=Number(e.target.value||0);save()}}
+if(e.target.dataset.placeOrder&&managerUnlocked){const dist=e.target.dataset.placeOrder,lines=db.orderQueue.filter(q=>q.distributor===dist&&q.status==="Pending"&&q.qty>0);if(!lines.length)return;modal(`<h2>Place ${esc(dist)} Order</h2><div class="formgrid"><label>Order Date<input id="placeOrderDate" type="date" value="${today()}"></label></div><div class="notice">${lines.length} line item(s) will be moved to Awaiting Delivery.</div><div class="row"><button id="confirmPlaceOrder" data-dist="${esc(dist)}" class="btn primary">Place Order</button><button id="modalCancel" class="btn">Cancel</button></div>`)}
+if(e.target.id==="confirmPlaceOrder"&&managerUnlocked){const dist=e.target.dataset.dist,lines=db.orderQueue.filter(q=>q.distributor===dist&&q.status==="Pending"&&q.qty>0),o={id:makeId("ord"),distributor:dist,orderDate:document.getElementById("placeOrderDate").value,status:"Awaiting Delivery",deliveryDate:"",lines:lines.map(q=>({itemId:q.itemId,orderedQty:q.qty,receivedQty:0,unit:q.unit}))};db.orders.push(o);lines.forEach(q=>q.status="Placed");save();closeModal()}
+if(e.target.dataset.receiveOrder&&managerUnlocked){const o=db.orders.find(a=>a.id===e.target.dataset.receiveOrder);if(o)modal(`<h2>Receive ${esc(o.distributor)} Delivery</h2><div class="formgrid"><label>Delivery Date<input id="recvDate" type="date" value="${today()}"></label></div>${o.lines.map((l,i)=>`<div class="order-line"><span>${esc(itemById(l.itemId)?.name||"Deleted item")}<br><span class="small">Ordered ${l.orderedQty} ${esc(l.unit)}</span></span><input type="number" min="0" step="1" value="${l.orderedQty}" data-recv-line="${i}" style="width:90px"></div>`).join("")}<div class="row" style="margin-top:12px"><button id="confirmReceiveOrder" data-id="${o.id}" class="btn good">Confirm Delivery & Update Inventory</button><button id="modalCancel" class="btn">Cancel</button></div>`)}
+if(e.target.id==="confirmReceiveOrder"&&managerUnlocked){const o=db.orders.find(a=>a.id===e.target.dataset.id);if(o){o.lines.forEach((l,i)=>{l.receivedQty=Number(document.querySelector(`[data-recv-line="${i}"]`)?.value||0);applyReceivedToInventory(itemById(l.itemId),l.receivedQty)});o.deliveryDate=document.getElementById("recvDate").value;o.status="Delivered";save();closeModal()}}
+if(e.target.dataset.printOneOrder){const o=db.orders.find(a=>a.id===e.target.dataset.printOneOrder);if(o)printReport(`${o.distributor} Order`,htmlTable(["Item","Ordered","Received","Unit"],o.lines.map(l=>[esc(itemById(l.itemId)?.name||""),l.orderedQty,l.receivedQty||0,esc(l.unit)])))}
+if(e.target.dataset.editDrop&&managerUnlocked){const d=db.dropEntries.find(a=>a.id===e.target.dataset.editDrop);if(d)modal(`<h2>Edit End of Shift Drop</h2><div class="formgrid"><label>Bartender<select id="edBart">${db.bartenders.map(b=>`<option value="${b.id}" ${b.id===d.bartenderId?"selected":""}>${esc(b.name)}</option>`).join("")}</select></label><label>Date<input id="edDate" type="date" value="${esc(d.date)}"></label><label>Net Revenue<input id="edNet" type="number" step=".01" value="${d.netRevenue}"></label><label>Tax<input id="edTax" type="number" step=".01" value="${d.tax}"></label><label>Charge Card<input id="edCard" type="number" step=".01" value="${d.chargeCard}"></label><label>Tips<input id="edTips" type="number" step=".01" value="${d.tips}"></label><label>Lotto Closeout<select id="edLotto"><option ${!d.lotto?"selected":""}>No</option><option ${d.lotto?"selected":""}>Yes</option></select></label><label>Lotto Bank<input id="edLottoBank" type="number" step=".01" value="${d.lottoBank||600}"></label><label>Lotto Sales<input id="edLottoSales" type="number" step=".01" value="${d.lottoSales||0}"></label><label>Lotto Payout<input id="edLottoPayout" type="number" step=".01" value="${d.lottoPayout||0}"></label></div><div class="row" style="margin-top:12px"><button id="saveDropEditGo" data-id="${d.id}" class="btn primary">Save Correction</button><button id="modalCancel" class="btn">Cancel</button></div>`)}
+if(e.target.id==="saveDropEditGo"&&managerUnlocked){const d=db.dropEntries.find(a=>a.id===e.target.dataset.id);if(d){d.bartenderId=Number(document.getElementById("edBart").value);d.date=document.getElementById("edDate").value;d.netRevenue=Number(document.getElementById("edNet").value||0);d.tax=Number(document.getElementById("edTax").value||0);d.total=d.netRevenue+d.tax;d.chargeCard=Number(document.getElementById("edCard").value||0);d.cashDrop=d.total-d.chargeCard;d.tips=Number(document.getElementById("edTips").value||0);d.lotto=document.getElementById("edLotto").value==="Yes";d.lottoBank=Number(document.getElementById("edLottoBank").value||600);d.lottoSales=Number(document.getElementById("edLottoSales").value||0);d.lottoPayout=Number(document.getElementById("edLottoPayout").value||0);d.lottoNet=d.lottoSales-d.lottoPayout;const pre=d.lottoBank+d.lottoNet;d.lottoDrop=d.lotto?Math.max(0,pre-600):0;d.lottoEndingBank=d.lotto?pre-d.lottoDrop:d.lottoBank;d.managerEdited=true;d.managerEditedAt=new Date().toISOString();save();closeModal()}}
+if(e.target.id==="modalCancel")closeModal();if(e.target.id==="createMonthShifts")createMonthShiftsFromSetup();if(e.target.id==="saveEventGo"){const id=Number(e.target.dataset.id),obj={date:document.getElementById("evtDate").value,name:document.getElementById("evtName").value.trim(),start:document.getElementById("evtStart").value,end:document.getElementById("evtEnd").value,notes:document.getElementById("evtNotes").value.trim()};if(!obj.date||!obj.name)return alert("Date and Event Name are required.");if(id)Object.assign(db.events.find(ev=>ev.id===id),obj);else{const makeShift=document.getElementById("evtAddShift")?.checked;if(makeShift&&(!obj.start||!obj.end))return alert("Enter both start and end time if you want CIM to create an event shift.");db.events.push({id:db.nextEventId++,...obj});if(makeShift)db.schedule.push({id:db.nextShiftId++,date:obj.date,bartenderId:null,start:obj.start,end:obj.end,status:"Scheduled",label:obj.name})}save();closeModal()}
 if(e.target.id==="deleteEventGo"){if(confirm("Delete this event from the calendar?")){db.events=db.events.filter(ev=>ev.id!==Number(e.target.dataset.id));save();closeModal()}}
-if(e.target.id==="confirmDropSubmit"){if(window.__pendingDrop){db.dropEntries.push(window.__pendingDrop);window.__pendingDrop=null;save();closeModal();clearDropForm();alert("Drop Recorded.")}}if(e.target.dataset.deleteDrop&&managerUnlocked){if(confirm("Delete this drop entry?")){db.dropEntries=db.dropEntries.filter(d=>d.id!==e.target.dataset.deleteDrop);save()}}if(e.target.id==="saveNewPin"){const a=document.getElementById("pin1").value,b=document.getElementById("pin2").value;if(a.length<4||a!==b)return alert("PIN must match and be at least 4 characters.");db.pinHash=await hashPin(a);save();closeModal();alert("Manager PIN created.")}if(e.target.id==="unlockGo"){if(await hashPin(document.getElementById("unlockPin").value)!==db.pinHash)return alert("Incorrect PIN.");managerUnlocked=true;closeModal();renderAll()}if(e.target.id==="confirmMove"){const bid=Number(document.getElementById("moveBartender").value);if(!bid)return alert("Select bartender.");const item=db.items.find(i=>i.id===Number(e.target.dataset.id));db.movements.push({id:"m"+Date.now()+Math.random(),itemId:item.id,bartenderId:bid,type:moveType(item),time:new Date().toISOString()});save();closeModal()}if(e.target.dataset.editMove&&managerUnlocked){const m=db.movements.find(x=>x.id===e.target.dataset.editMove),i=db.items.find(x=>x.id===m.itemId),b=db.bartenders.find(x=>x.id===m.bartenderId);modal(`<h2>Edit Stock Movement</h2><div class="formgrid"><label class="full">Item<select id="emItem">${db.items.filter(x=>x.active).map(x=>`<option value="${x.id}" ${x.id===m.itemId?"selected":""}>${esc(x.name)}</option>`).join("")}</select></label><label>Bartender<select id="emBart">${activeBartenders().map(x=>`<option value="${x.id}" ${x.id===m.bartenderId?"selected":""}>${esc(x.name)}</option>`).join("")}</select></label></div><div class="row" style="margin-top:14px"><button id="saveMoveEdit" data-id="${m.id}" class="btn primary">Save</button><button id="deleteMoveEdit" data-id="${m.id}" class="btn danger">Delete</button><button id="modalCancel" class="btn">Cancel</button></div>`)}if(e.target.id==="saveMoveEdit"){const m=db.movements.find(x=>x.id===e.target.dataset.id);m.itemId=Number(document.getElementById("emItem").value);m.bartenderId=Number(document.getElementById("emBart").value);m.type=moveType(db.items.find(i=>i.id===m.itemId));save();closeModal()}if(e.target.id==="deleteMoveEdit"){if(confirm("Delete this incorrect submission?")){db.movements=db.movements.filter(x=>x.id!==e.target.dataset.id);save();closeModal()}}if(e.target.id==="saveItem"){const id=Number(e.target.dataset.id),obj={name:document.getElementById("fName").value.trim(),category:document.getElementById("fCat").value.trim(),unitSize:document.getElementById("fUnit").value.trim(),distributor:document.getElementById("fDist").value,caseQty:Number(document.getElementById("fCase").value||1),packQty:Number(document.getElementById("fPack").value||0),parType:document.getElementById("fParType").value,parValue:Number(document.getElementById("fPar").value||0),active:document.getElementById("fActive").value==="true"};if(!obj.name||!obj.category)return alert("Name and category are required.");if(id)Object.assign(db.items.find(x=>x.id===id),obj);else db.items.push({id:db.nextItemId++,countCases:0,countPacks:0,countSingles:0,notes:"",...obj});save();closeModal()}if(e.target.id==="deleteItem"){if(confirm("Delete this item?")){db.items=db.items.filter(x=>x.id!==Number(e.target.dataset.id));save();closeModal()}}if(e.target.id==="saveShift"){const id=Number(e.target.dataset.id),obj={date:document.getElementById("sDate").value,bartenderId:Number(document.getElementById("sBart").value)||null,start:document.getElementById("sStart").value,end:document.getElementById("sEnd").value,status:document.getElementById("sStatus").value,label:document.getElementById("sLabel").value.trim()};if(id)Object.assign(db.schedule.find(x=>x.id===id),obj);else db.schedule.push({id:db.nextShiftId++,...obj});save();closeModal()}if(e.target.id==="deleteShift"){if(confirm("Delete shift?")){db.schedule=db.schedule.filter(x=>x.id!==Number(e.target.dataset.id));save();closeModal()}}if(e.target.id==="changePinGo"){if(await hashPin(document.getElementById("oldPin").value)!==db.pinHash)return alert("Current PIN is incorrect.");const a=document.getElementById("newPin1").value,b=document.getElementById("newPin2").value;if(a.length<4||a!==b)return alert("New PIN must match and be at least 4 characters.");db.pinHash=await hashPin(a);save();closeModal();alert("PIN changed.")}if(e.target.id==="clearGo"){if(await hashPin(document.getElementById("clearPin").value)!==db.pinHash)return alert("Incorrect PIN.");if(document.getElementById("clearWord").value!=="CLEAR")return alert("Type CLEAR exactly.");const pin=db.pinHash;db=freshDB();db.pinHash=pin;save();closeModal();managerUnlocked=false;renderAll();switchTab("dashboard")}});
+if(e.target.id==="confirmDropSubmit"){if(window.__pendingDrop){db.dropEntries.push(window.__pendingDrop);window.__pendingDrop=null;save();closeModal();clearDropForm();alert("Drop Recorded.")}}if(e.target.dataset.deleteDrop&&managerUnlocked){if(confirm("Delete this drop entry?")){db.dropEntries=db.dropEntries.filter(d=>d.id!==e.target.dataset.deleteDrop);save()}}if(e.target.id==="saveNewPin"){const a=document.getElementById("pin1").value,b=document.getElementById("pin2").value;if(a.length<4||a!==b)return alert("PIN must match and be at least 4 characters.");db.pinHash=await hashPin(a);save();closeModal();alert("Manager PIN created.")}if(e.target.id==="unlockGo"){if(await hashPin(document.getElementById("unlockPin").value)!==db.pinHash)return alert("Incorrect PIN.");managerUnlocked=true;closeModal();renderAll()}if(e.target.id==="confirmMove"){const bid=Number(document.getElementById("moveBartender").value);if(!bid)return alert("Select bartender.");const item=db.items.find(i=>i.id===Number(e.target.dataset.id));db.movements.push({id:"m"+Date.now()+Math.random(),itemId:item.id,bartenderId:bid,type:moveType(item),time:new Date().toISOString()});addMovementToOrderQueue(item);save();closeModal()}if(e.target.dataset.editMove&&managerUnlocked){const m=db.movements.find(x=>x.id===e.target.dataset.editMove),i=db.items.find(x=>x.id===m.itemId),b=db.bartenders.find(x=>x.id===m.bartenderId);modal(`<h2>Edit Stock Movement</h2><div class="formgrid"><label class="full">Item<select id="emItem">${db.items.filter(x=>x.active).map(x=>`<option value="${x.id}" ${x.id===m.itemId?"selected":""}>${esc(x.name)}</option>`).join("")}</select></label><label>Bartender<select id="emBart">${activeBartenders().map(x=>`<option value="${x.id}" ${x.id===m.bartenderId?"selected":""}>${esc(x.name)}</option>`).join("")}</select></label></div><div class="row" style="margin-top:14px"><button id="saveMoveEdit" data-id="${m.id}" class="btn primary">Save</button><button id="deleteMoveEdit" data-id="${m.id}" class="btn danger">Delete</button><button id="modalCancel" class="btn">Cancel</button></div>`)}if(e.target.id==="saveMoveEdit"){const m=db.movements.find(x=>x.id===e.target.dataset.id);m.itemId=Number(document.getElementById("emItem").value);m.bartenderId=Number(document.getElementById("emBart").value);m.type=moveType(db.items.find(i=>i.id===m.itemId));save();closeModal()}if(e.target.id==="deleteMoveEdit"){if(confirm("Delete this incorrect submission?")){db.movements=db.movements.filter(x=>x.id!==e.target.dataset.id);save();closeModal()}}if(e.target.id==="saveItem"){const id=Number(e.target.dataset.id),obj={name:document.getElementById("fName").value.trim(),category:document.getElementById("fCat").value.trim(),unitSize:document.getElementById("fUnit").value.trim(),distributor:document.getElementById("fDist").value,caseQty:Number(document.getElementById("fCase").value||1),packQty:Number(document.getElementById("fPack").value||0),parType:document.getElementById("fParType").value,parValue:Number(document.getElementById("fPar").value||0),active:document.getElementById("fActive").value==="true"};if(!obj.name||!obj.category)return alert("Name and category are required.");if(id)Object.assign(db.items.find(x=>x.id===id),obj);else db.items.push({id:db.nextItemId++,countCases:0,countPacks:0,countSingles:0,notes:"",...obj});save();closeModal()}if(e.target.id==="deleteItem"){if(confirm("Delete this item?")){db.items=db.items.filter(x=>x.id!==Number(e.target.dataset.id));save();closeModal()}}if(e.target.id==="saveShift"){const id=Number(e.target.dataset.id),obj={date:document.getElementById("sDate").value,bartenderId:Number(document.getElementById("sBart").value)||null,start:document.getElementById("sStart").value,end:document.getElementById("sEnd").value,status:document.getElementById("sStatus").value,label:document.getElementById("sLabel").value.trim()};if(id)Object.assign(db.schedule.find(x=>x.id===id),obj);else db.schedule.push({id:db.nextShiftId++,...obj});save();closeModal()}if(e.target.id==="deleteShift"){if(confirm("Delete shift?")){db.schedule=db.schedule.filter(x=>x.id!==Number(e.target.dataset.id));save();closeModal()}}if(e.target.id==="changePinGo"){if(await hashPin(document.getElementById("oldPin").value)!==db.pinHash)return alert("Current PIN is incorrect.");const a=document.getElementById("newPin1").value,b=document.getElementById("newPin2").value;if(a.length<4||a!==b)return alert("New PIN must match and be at least 4 characters.");db.pinHash=await hashPin(a);save();closeModal();alert("PIN changed.")}if(e.target.id==="clearGo"){if(await hashPin(document.getElementById("clearPin").value)!==db.pinHash)return alert("Incorrect PIN.");if(document.getElementById("clearWord").value!=="CLEAR")return alert("Type CLEAR exactly.");const pin=db.pinHash;db=freshDB();db.pinHash=pin;save();closeModal();managerUnlocked=false;renderAll();switchTab("dashboard")}});
 renderAll();renderTaskChecklist();
 </script>
 </body></html>

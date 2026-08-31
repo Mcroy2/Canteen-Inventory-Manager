@@ -432,13 +432,48 @@ function renderManagerActionCenter(){
 function printCompletedSchedule(){
   const y=schedCursor.getFullYear(),m=schedCursor.getMonth(),label=schedCursor.toLocaleString([],{month:"long",year:"numeric"});
   const first=new Date(y,m,1),start=new Date(y,m,1-first.getDay());
-  let cal='<div class="calendar">'+["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="dow">${d}</div>`).join("");
-  for(let n=0;n<42;n++){const d=new Date(start);d.setDate(start.getDate()+n);const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`,out=d.getMonth()!==m,ev=eventsForDate(ds),sh=db.schedule.filter(s=>s.date===ds).sort((a,b)=>a.start.localeCompare(b.start));
-    cal+=`<div class="day" style="${out?"color:#999;":""}"><div class="date">${d.getDate()} ${ev.length?'<span class="marker">EVENT</span>':""}</div>${sh.map(s=>`<div class="shift"><b>${esc(bartenderName(s.bartenderId))}</b> ${fmtTime(s.start)}–${fmtTime(s.end)}${s.label?`<br>${esc(s.label)}`:""}</div>`).join("")}</div>`}
+  let cal='<div class="schedule-sheet"><div class="calendar compact-calendar">'+["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="dow">${d}</div>`).join("");
+  for(let n=0;n<42;n++){
+    const d=new Date(start);d.setDate(start.getDate()+n);
+    const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`,
+    out=d.getMonth()!==m,
+    ev=eventsForDate(ds),
+    sh=db.schedule.filter(s=>s.date===ds).sort((a,b)=>a.start.localeCompare(b.start));
+    cal+=`<div class="day" style="${out?"color:#999;":""}">
+      <div class="date">${d.getDate()} ${ev.length?'<span class="marker">EVENT</span>':""}</div>
+      ${sh.map(s=>`<div class="shift"><b>${esc(bartenderName(s.bartenderId))}</b> ${fmtTime(s.start)}–${fmtTime(s.end)}${s.label?`<br>${esc(s.label)}`:""}</div>`).join("")}
+    </div>`;
+  }
   cal+='</div>';
-  const monthEvents=db.events.filter(e=>{const d=new Date(e.date+"T12:00:00");return d.getFullYear()===y&&d.getMonth()===m}).sort((a,b)=>a.date.localeCompare(b.date)||(a.start||"").localeCompare(b.start||""));
-  const evhtml=monthEvents.length?`<h2>Events This Month</h2>${monthEvents.map(e=>`<div class="event">${esc(e.date)} — ${esc(e.name)}${e.start?` • ${fmtTime(e.start)}${e.end?"–"+fmtTime(e.end):""}`:""}${e.notes?`<br><span style="font-weight:normal">${esc(e.notes)}</span>`:""}</div>`).join("")}`:"";
-  printReport(`Canteen Crew Bartender Schedule — ${label}`,cal+evhtml,{landscape:true});
+
+  const monthEvents=db.events.filter(e=>{const d=new Date(e.date+"T12:00:00");return d.getFullYear()===y&&d.getMonth()===m})
+    .sort((a,b)=>a.date.localeCompare(b.date)||(a.start||"").localeCompare(b.start||""));
+
+  const evhtml=monthEvents.length?`<div class="events-block"><div class="events-title">EVENTS THIS MONTH</div><div class="events-grid">${
+    monthEvents.map(e=>`<div class="event-mini"><b>${esc(e.date.slice(5))} — ${esc(e.name)}</b>${e.start?` • ${fmtTime(e.start)}${e.end?"–"+fmtTime(e.end):""}`:""}${e.notes?`<span> • ${esc(e.notes)}</span>`:""}</div>`).join("")
+  }</div></div>`:"";
+
+  const body=`<style>
+    @page{size:landscape;margin:.18in}
+    body{font-family:Arial,sans-serif;margin:0;color:#111}
+    h1{font-size:16pt;margin:0 0 2px}
+    .sub{font-size:8pt;margin-bottom:5px}
+    .schedule-sheet{page-break-inside:avoid;break-inside:avoid}
+    .compact-calendar{grid-template-columns:repeat(7,1fr);grid-template-rows:auto repeat(6,0.82in);width:100%}
+    .compact-calendar .dow{font-size:7.5pt;padding:2px}
+    .compact-calendar .day{min-height:0;height:.82in;padding:2px 3px;font-size:6.1pt;line-height:1.02}
+    .compact-calendar .date{font-size:7pt}
+    .compact-calendar .shift{font-size:5.7pt;line-height:1.02;padding-top:1px;margin-top:1px}
+    .compact-calendar .shift b{font-size:5.9pt}
+    .marker{font-size:5.8pt;padding:1px 3px;background:#b91c2b!important;color:#fff!important}
+    .events-block{margin-top:5px;border-top:2px solid #b91c2b;padding-top:3px}
+    .events-title{font-weight:800;font-size:8pt;margin-bottom:2px}
+    .events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px 8px}
+    .event-mini{font-size:6pt;line-height:1.05;background:#fee2e2!important;border-left:3px solid #b91c2b;padding:2px 3px;break-inside:avoid}
+    .event-mini span{font-weight:normal}
+    @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style>${cal}${evhtml}`;
+  printReport(`Canteen Crew Bartender Schedule — ${label}`,body,{landscape:true});
 }
 
 function renderAll(){renderDashboard();renderMovement();renderCount();renderOrders();renderItems();renderSettings();renderSchedule();renderShiftTracker();renderTaskSelectors();renderTaskHistory();renderDropSelectors();renderDropHistory();renderRequests();renderNotices();renderBudget();renderManagerLog();renderManagerUI();renderManagerActionCenter()}
